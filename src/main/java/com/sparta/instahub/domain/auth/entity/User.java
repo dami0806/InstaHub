@@ -1,30 +1,31 @@
 package com.sparta.instahub.domain.auth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.github.f4b6a3.ulid.UlidCreator;
 import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.common.entity.BaseEntity;
 import com.sparta.instahub.domain.post.entity.Post;
-import com.sparta.instahub.domain.profile.entity.PasswordHistory;
-import com.sparta.instahub.domain.profile.entity.Profile;
+import com.sparta.instahub.global.BaseTime.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "user_status = 'ACTIVE'")
 @JsonIgnoreProperties({"posts", "comments", "profile"})
-public class User extends BaseEntity {
+//@Where(clause = "user_status = 'ACTIVE'")
+public class User implements Auditable {
 
     // 기본키
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id = UlidCreator.getMonotonicUlid().toUuid();
 
     // 사용자 ID
     @Column(nullable = false, unique = true)
@@ -53,6 +54,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private UserRole userRole;
 
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn
+    private DeviceToken deviceToken;
+
     // refreshToken
     @Column
     private String refreshToken;
@@ -65,23 +70,17 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments; // 사용자가 작성한 댓글 목록
 
-    // User와 Profile 1대1 관계
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Profile profile;
 
-    public User(String userId, String name, String email, String password) {
-        this.userId = userId;
+
+    public User(String name, String email, String password) {
         this.username = name;
         this.email = email;
         this.password = password;
     }
-    // User와 PasswordHistroy는 1대다 관계
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PasswordHistory> passwordHistories; // 사용자가 작성한 비밀번호 목록
+//    // User와 PasswordHistroy는 1대다 관계
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PasswordHistory> passwordHistories; // 사용자가 작성한 비밀번호 목록
 
-    public void updateProfile(Profile profile) {
-        this.profile = profile;
-    }
 
     // 사용자 역할 및 상태를 업데이트
     public void promoteToAdmin() {
@@ -144,13 +143,5 @@ public class User extends BaseEntity {
         this.refreshToken = null;
     }
 
-    public void updateUserInfo(User user) {
-        this.userId = user.getUserId();
-        this.username = user.getUsername();
-        this.email = user.getEmail();
-        this.userRole = user.getUserRole();
-        this.profile = user.getProfile();
-        this.userStatus = user.getUserStatus();
-    }
 
 }

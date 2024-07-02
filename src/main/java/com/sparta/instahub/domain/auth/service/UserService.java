@@ -46,9 +46,6 @@ public interface UserService {
 
     User unblockUser(Long id);
 
-    User savePasswordHistory();
-
-    void updatePassword(PasswordRequestDto requestDto);
 
     User getUserByName(String username);
 

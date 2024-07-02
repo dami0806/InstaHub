@@ -29,7 +29,6 @@ public class Post extends BaseEntity {
     // 작성자
     @ManyToOne
     @JoinColumn(name="userId",nullable = false)
-    @Where(clause = "user_status = 'ACTIVE'")
     private User user;
 
     // 게시물 제목

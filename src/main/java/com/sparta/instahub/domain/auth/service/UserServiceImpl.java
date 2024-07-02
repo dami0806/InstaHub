@@ -5,9 +5,6 @@ import com.sparta.instahub.domain.auth.jwt.JwtUtil;
 import com.sparta.instahub.domain.auth.repository.UserRepository;
 import com.sparta.instahub.domain.auth.entity.*;
 import com.sparta.instahub.domain.profile.dto.PasswordRequestDto;
-import com.sparta.instahub.domain.profile.entity.PasswordHistory;
-import com.sparta.instahub.domain.profile.entity.Profile;
-import com.sparta.instahub.domain.profile.repository.PasswordHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -24,7 +21,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordHistoryRepository passwordHistoryRepository;
+   // private final PasswordHistoryRepository passwordHistoryRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
@@ -72,11 +69,11 @@ public class UserServiceImpl implements UserService {
                 .userRole(UserRole.USER)
                 .build();
 
-        Profile profile = Profile.builder()
-                .user(user)
-                .build();
-
-        user.updateProfile(profile);
+//        Profile profile = Profile.builder()
+//                .user(user)
+//                .build();
+//
+//        user.updateProfile(profile);
 
         userRepository.save(user);
     }
@@ -240,23 +237,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
-    @Override
-    public User savePasswordHistory() {
-        Authentication loginUser =  SecurityContextHolder.getContext().getAuthentication(); // 로그인 된 사용자
-        String userName = loginUser.getName();
-
-        User user = userRepository.findByUsername(userName).orElseThrow(
-                () -> new IllegalArgumentException("다시 확인해주세요")
-        );
-
-        PasswordHistory passwordHistory = PasswordHistory.builder()
-                .user(user)
-                .password(user.getPassword())
-                .build();
-
-        passwordHistoryRepository.save(passwordHistory);
-        return user;
-    }
+//    @Override
+//    public User savePasswordHistory() {
+//        Authentication loginUser =  SecurityContextHolder.getContext().getAuthentication(); // 로그인 된 사용자
+//        String userName = loginUser.getName();
+//
+//        User user = userRepository.findByUsername(userName).orElseThrow(
+//                () -> new IllegalArgumentException("다시 확인해주세요")
+//        );
+//
+//        PasswordHistory passwordHistory = PasswordHistory.builder()
+//                .user(user)
+//                .password(user.getPassword())
+//                .build();
+//
+//        passwordHistoryRepository.save(passwordHistory);
+//        return user;
+//    }
 
 
     public void updatePassword(PasswordRequestDto requestDto){
