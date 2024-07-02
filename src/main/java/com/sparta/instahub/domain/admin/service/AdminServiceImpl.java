@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class AdminServiceImpl implements AdminService {
 
     // ID로 회원 조회
     @Transactional(readOnly = true)
-    public User getUserById(Long id) {
+    public User getUserById(UUID id) {
         User currentAdmin = getCurrentAdmin();
         checkIfAdmin(currentAdmin);
         return userService.getUserById(id);
@@ -45,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
 
     // 회원 정보 수정
     @Transactional
-    public User updateUser(Long id, String username, String email, UserRole userRole, UserStatus userStatus) {
+    public User updateUser(UUID id, String username, String email, UserRole userRole, UserStatus userStatus) {
         User currentAdmin = getCurrentAdmin();
         checkIfAdmin(currentAdmin);
         return userService.updateUser(id, username, email, userRole, userStatus);
@@ -53,7 +54,7 @@ public class AdminServiceImpl implements AdminService {
 
     // 회원 삭제
     @Transactional
-    public void deleteUser(Long id) {
+    public void deleteUser(UUID id) {
         User currentAdmin = getCurrentAdmin();
         checkIfAdmin(currentAdmin);
         userService.deleteUser(id);
@@ -61,7 +62,7 @@ public class AdminServiceImpl implements AdminService {
 
     // 회원 운영진으로 승격
     @Transactional
-    public User promoteUserToAdmin(Long id) {
+    public User promoteUserToAdmin(UUID id) {
         User currentAdmin = getCurrentAdmin();
         checkIfAdmin(currentAdmin);
         return userService.promoteUserToAdmin(id);
@@ -69,7 +70,7 @@ public class AdminServiceImpl implements AdminService {
 
     // 회원 차단
     @Transactional
-    public User blockUser(Long id) {
+    public User blockUser(UUID id) {
         User currentAdmin = getCurrentAdmin();
         checkIfAdmin(currentAdmin);
         return userService.blockUser(id);
@@ -77,7 +78,7 @@ public class AdminServiceImpl implements AdminService {
 
     // 회원 차단 해제
     @Transactional
-    public User unblockUser(Long id) {
+    public User unblockUser(UUID id) {
         User currentAdmin = getCurrentAdmin();
         checkIfAdmin(currentAdmin);
         return userService.unblockUser(id);
@@ -102,7 +103,7 @@ public class AdminServiceImpl implements AdminService {
 
     // 특정 게시글 삭제 (관리자)
     @Transactional
-    public void deletePost(Long postId) {
+    public void deletePost(UUID postId) {
         User currentAdmin = getCurrentAdmin();
         checkIfAdmin(currentAdmin);
         postService.deletePost(postId, currentAdmin.getUsername());

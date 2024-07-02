@@ -10,10 +10,11 @@ import com.sparta.instahub.domain.auth.entity.UserStatus;
 import com.sparta.instahub.domain.profile.dto.PasswordRequestDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
     // 사용자 정보 업데이트
-    User update(Long userId, String newEmail, String newUserId);
+    User update(UUID userId, String newEmail, String newUserId);
 
     // 회원가입
     void signup(SignupRequest signupRequest);
@@ -34,17 +35,17 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    User getUserById(Long id);
+    User getUserById(UUID id);
 
-    User updateUser(Long id, String username, String email, UserRole userRole, UserStatus userStatus);
+    User updateUser(UUID id, String username, String email, UserRole userRole, UserStatus userStatus);
 
-    void deleteUser(Long id);
+    void deleteUser(UUID id);
 
-    User promoteUserToAdmin(Long id);
+    User promoteUserToAdmin(UUID id);
 
-    User blockUser(Long id);
+    User blockUser(UUID id);
 
-    User unblockUser(Long id);
+    User unblockUser(UUID id);
 
 
     User getUserByName(String username);

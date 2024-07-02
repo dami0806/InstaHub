@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final JwtUtil jwtUtil;
 
     @Override
-    public User update(Long userId, String newEmail, String newUserId) {
+    public User update(UUID userId, String newEmail, String newUserId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException("다시 확인해주세요")
         );
@@ -193,12 +194,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
     }
 
     @Override
-    public User updateUser(Long id, String username, String email, UserRole userRole, UserStatus userStatus) {
+    public User updateUser(UUID id, String username, String email, UserRole userRole, UserStatus userStatus) {
         User user = getUserById(id);
         user.updateUserId(username);
         user.updateEmail(email);
@@ -208,26 +209,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(UUID id) {
         userRepository.deleteById(id);
     }
 
     @Override
-    public User promoteUserToAdmin(Long id) {
+    public User promoteUserToAdmin(UUID id) {
         User user = getUserById(id);
         user.promoteToAdmin();
         return userRepository.save(user);
     }
 
     @Override
-    public User blockUser(Long id) {
+    public User blockUser(UUID id) {
         User user = getUserById(id);
         user.blockUser();
         return userRepository.save(user);
     }
 
     @Override
-    public User unblockUser(Long id) {
+    public User unblockUser(UUID id) {
         User user = getUserById(id);
         user.unblockUser();
         return userRepository.save(user);

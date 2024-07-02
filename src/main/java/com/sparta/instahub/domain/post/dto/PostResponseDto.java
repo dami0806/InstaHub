@@ -1,12 +1,16 @@
 package com.sparta.instahub.domain.post.dto;
 
+import com.sparta.instahub.domain.post.entity.Post;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
+@Getter //Lombok
+@Builder //Lombok
+@AllArgsConstructor
 // 게시물 응답
 public class PostResponseDto {
     private UUID id; // 게시물 ID
@@ -17,15 +21,15 @@ public class PostResponseDto {
     private LocalDateTime createdAt; // 생성일시
     private LocalDateTime updatedAt; // 수정일시
 
-    @Builder
-    public PostResponseDto(UUID id, String title, String content, String author, String imageUrl, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.imageUrl = imageUrl;
-        this.author = author;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    public PostResponseDto(final Post post) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.author = post.getUser().getUsername();
+        this.imageUrl = post.getImageUrl();
+        this.createdAt = post.getCreatedAt();
+        this.updatedAt = post.getUpdatedAt();
     }
 }
+
 

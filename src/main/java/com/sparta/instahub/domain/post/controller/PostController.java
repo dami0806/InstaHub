@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 // 게시물 관련 요청을 처리하는 REST 컨트롤러
@@ -29,24 +30,26 @@ public class PostController {
      */
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPosts() {
-        List<Post> posts = postService.getAllPosts();
-        List<PostResponseDto> postResponseDtos = posts.stream()
-                .map(post -> PostResponseDto.builder()
-                        .id(post.getId())
-                        .title(post.getTitle())
-                        .content(post.getContent())
-                        .author(post.getUser().getUsername())
-                        .imageUrl(post.getImageUrl())
-                        .createdAt(post.getCreatedAt())
-                        .updatedAt(post.getUpdatedAt())
-                        .build())
-                .collect(Collectors.toList());
-        return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
+        List<PostResponseDto> postResponseDtos = postService.getAllPosts();
+        return ResponseEntity.ok(postResponseDtos);
+
+//        List<PostResponseDto> postResponseDtos = posts.stream()
+//                .map(post -> PostResponseDto.builder()
+//                        .id(post.getId())
+//                        .title(post.getTitle())
+//                        .content(post.getContent())
+//                        .author(post.getUser().getUsername())
+//                        .imageUrl(post.getImageUrl())
+//                        .createdAt(post.getCreatedAt())
+//                        .updatedAt(post.getUpdatedAt())
+//                        .build())
+//                .collect(Collectors.toList());
+//        return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
     }
 
     // ID로 게시물 조회 요청 처리
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long id) {
+    public ResponseEntity<PostResponseDto> getPostById(@PathVariable UUID id) {
         Post post = postService.getPostById(id);
         PostResponseDto postResponseDto = PostResponseDto.builder()
                 .id(post.getId())
@@ -79,7 +82,7 @@ public class PostController {
 
     // 게시물 수정 요청 처리
     @PatchMapping("/{id}")
-    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long id,
+    public ResponseEntity<PostResponseDto> updatePost(@PathVariable UUID id,
                                                       @ModelAttribute PostRequestDto postRequestDto,
                                                       @AuthenticationPrincipal UserDetails userDetails) throws IOException {
         Post post = postService.updatePost(id, postRequestDto.getTitle(), postRequestDto.getContent(),postRequestDto.getImage(), userDetails.getUsername());
@@ -98,7 +101,7 @@ public class PostController {
 
     // 게시물 삭제 요청 처리
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Void> deletePost(@PathVariable UUID id, @AuthenticationPrincipal UserDetails userDetails) {
         postService.deletePost(id, userDetails.getUsername()); // 게시물 삭제
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

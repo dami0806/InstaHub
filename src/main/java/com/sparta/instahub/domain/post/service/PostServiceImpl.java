@@ -3,6 +3,7 @@ package com.sparta.instahub.domain.post.service;
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.auth.entity.UserRole;
 import com.sparta.instahub.domain.auth.service.UserServiceImpl;
+import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.repository.PostRepository;
 import com.sparta.instahub.exception.InaccessiblePostException;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 // Post 엔티티에 대한 비즈니스 로직을 처리하는 서비스 클래스
 @Service
@@ -27,14 +30,17 @@ public class PostServiceImpl implements PostService {
     // 모든 게시물 조회
     @Override
     @Transactional(readOnly = true)
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<PostResponseDto> getAllPosts() {
+        List <Post> posts = postRepository.findAll();
+        return posts.stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     // ID로 게시물 조회
     @Override
     @Transactional(readOnly = true)
-    public Post getPostById(Long id) {
+    public Post getPostById(UUID id) {
         return postRepository.findById(id).orElseThrow(() ->
                 new InaccessiblePostException("Invalid post ID"));
     }
@@ -67,45 +73,46 @@ public class PostServiceImpl implements PostService {
     // 게시물 수정
     @Override
     @Transactional
-    public Post updatePost(Long id, String title, String content, MultipartFile image, String username) {
-       try {
-           // 현재 로그인된 사용자 가져오기
-           User currentUser = userService.getUserByName(username);
-           Post post = getPostById(id); // ID로 게시물 조회
-
-           if (!post.getUser().equals(currentUser)) {
-               throw new UnauthorizedException("포스트 수정 권한이 없는 사용자 입니다.");
-           }
-           if (image != null && !image.isEmpty()) {
-               if (post.getImageUrl() != null) {
-                   s3Service.deleteFile(post.getImageUrl());
-               }
-               String imageUrl = s3Service.uploadFile(image);
-               post.update(title, content, imageUrl);
-           } else {
-               post.update(title, content, post.getImageUrl());
-           }
-           return postRepository.save(post);
-       } catch (InaccessiblePostException e) {
-           throw new InaccessiblePostException("포스트를 수정할 수 없습니다.");
-       }
+    public Post updatePost(UUID id, String title, String content, MultipartFile image, String username) {
+//       try {
+//           // 현재 로그인된 사용자 가져오기
+//           User currentUser = userService.getUserByName(username);
+//           Post post = getPostById(id); // ID로 게시물 조회
+//
+//           if (!post.getUser().equals(currentUser)) {
+//               throw new UnauthorizedException("포스트 수정 권한이 없는 사용자 입니다.");
+//           }
+//           if (image != null && !image.isEmpty()) {
+//               if (post.getImageUrl() != null) {
+//                   s3Service.deleteFile(post.getImageUrl());
+//               }
+//               String imageUrl = s3Service.uploadFile(image);
+//               post.update(title, content, imageUrl);
+//           } else {
+//               post.update(title, content, post.getImageUrl());
+//           }
+//           return postRepository.save(post);
+//       } catch (InaccessiblePostException e) {
+//           throw new InaccessiblePostException("포스트를 수정할 수 없습니다.");
+//       }
+        return postRepository.save(null);
     }
 
     // 게시물 삭제
     @Override
     @Transactional
-    public void deletePost(Long id, String username) {
-        User currentUser = userService.getUserByName(username);
-        Post post = getPostById(id); // ID로 게시물 조회
-
-        // 현재 로그인된 사용자가 게시글 작성자이거나 관리자인지 확인
-        if (!post.getUser().equals(currentUser) && currentUser.getUserRole() != UserRole.ADMIN) {
-            throw new UnauthorizedException("포스트 삭제 권한이 없는 사용자 입니다.");
-        }
-        if (post.getImageUrl() != null) {
-            s3Service.deleteFile(post.getImageUrl());
-        }
-        postRepository.deleteById(id); // ID로 게시물 삭제
+    public void deletePost(UUID id, String username) {
+//        User currentUser = userService.getUserByName(username);
+//        Post post = getPostById(id); // ID로 게시물 조회
+//
+//        // 현재 로그인된 사용자가 게시글 작성자이거나 관리자인지 확인
+//        if (!post.getUser().equals(currentUser) && currentUser.getUserRole() != UserRole.ADMIN) {
+//            throw new UnauthorizedException("포스트 삭제 권한이 없는 사용자 입니다.");
+//        }
+//        if (post.getImageUrl() != null) {
+//            s3Service.deleteFile(post.getImageUrl());
+//        }
+//        postRepository.deleteById(id); // ID로 게시물 삭제
     }
 
     // 모든 게시물 삭제

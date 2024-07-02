@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,42 +30,42 @@ public class AdminController {
 
     // ID로 회원 조회
     @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
         User user = adminService.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     // 회원 정보 수정
     @PatchMapping("/users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userRequest) {
+    public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody User userRequest) {
         User updatedUser = adminService.updateUser(id, userRequest.getUsername(), userRequest.getEmail(), userRequest.getUserRole(), userRequest.getUserStatus());
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     // 회원 삭제
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         adminService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // 회원 운영진으로 변경
     @PatchMapping("/users/{id}/promote")
-    public ResponseEntity<User> promoteUserToAdmin(@PathVariable Long id) {
+    public ResponseEntity<User> promoteUserToAdmin(@PathVariable UUID id) {
         User promotedUser = adminService.promoteUserToAdmin(id);
         return new ResponseEntity<>(promotedUser, HttpStatus.OK);
     }
 
     // 회원 차단
     @PatchMapping("/users/{id}/block")
-    public ResponseEntity<User> blockUser(@PathVariable Long id) {
+    public ResponseEntity<User> blockUser(@PathVariable UUID id) {
         User blockedUser = adminService.blockUser(id);
         return new ResponseEntity<>(blockedUser, HttpStatus.OK);
     }
 
     // 회원 차단 해제
     @PatchMapping("/users/{id}/unblock")
-    public ResponseEntity<User> unblockUser(@PathVariable Long id) {
+    public ResponseEntity<User> unblockUser(@PathVariable UUID id) {
         User unblockedUser = adminService.unblockUser(id);
         return new ResponseEntity<>(unblockedUser, HttpStatus.OK);
     }
@@ -94,7 +95,7 @@ public class AdminController {
 
     // 특정 게시글 삭제 (관리자)
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePost(@PathVariable UUID id) {
         adminService.deletePost(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 
 public interface AdminService {
@@ -20,23 +21,23 @@ public interface AdminService {
 
     // ID로 회원 조회
     @Transactional(readOnly = true)
-    public User getUserById(Long id);
+    public User getUserById(UUID id);
 
     // 회원 정보 수정
-    User updateUser(Long id, String username, String email, UserRole userRole, UserStatus userStatus);
+    User updateUser(UUID id, String username, String email, UserRole userRole, UserStatus userStatus);
 
     // 회원 삭제
-    void deleteUser(Long id);
+    void deleteUser(UUID id);
 
     // 회원 운영진으로 승격
     @Transactional
-    public User promoteUserToAdmin(Long id);
+    public User promoteUserToAdmin(UUID id);
 
     // 회원 차단
-    User blockUser(Long id);
+    User blockUser(UUID id);
 
     // 회원 차단 해제
-    User unblockUser(Long id);
+    User unblockUser(UUID id);
 
     // 공지글 등록
     Post createAnnouncement(String title, String content, MultipartFile imageUrl) throws IOException;
@@ -45,7 +46,7 @@ public interface AdminService {
     void deleteAllPosts();
 
     // 특정 게시글 삭제 (관리자)
-    void deletePost(Long postId);
+    void deletePost(UUID postId);
 
     // 현재 로그인된 관리자 가져오기
     User getCurrentAdmin();
