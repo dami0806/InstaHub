@@ -1,28 +1,35 @@
-package com.sparta.instahub.post.entity;
+package com.sparta.instahub.domain.post.entity;
 
-import com.sparta.instahub.auth.entity.User;
-import com.sparta.instahub.comment.entity.Comment;
+import com.github.f4b6a3.ulid.UlidCreator;
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
-
 
     // 기본 키
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID id = UlidCreator.getMonotonicUlid().toUuid();
 
     // 작성자
     @ManyToOne
     @JoinColumn(name="userId",nullable = false)
+    @Where(clause = "user_status = 'ACTIVE'")
     private User user;
 
     // 게시물 제목
@@ -62,10 +69,6 @@ public class Post extends BaseEntity {
         this.updatedAt = LocalDateTime.now(); // 현재 시간을 수정일시로 설정
     }
 
-    public Post() {
-
-    }
-
     // 게시물 업데이트 메서드
     public void update(String title, String content, String imageUrl) {
         this.title = title;
@@ -73,8 +76,4 @@ public class Post extends BaseEntity {
         this.imageUrl = imageUrl;
         this.updatedAt = LocalDateTime.now(); // 현재 시간을 수정일시로 설정
     }
-
-
-
-
 }

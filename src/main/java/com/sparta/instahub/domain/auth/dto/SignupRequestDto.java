@@ -1,7 +1,7 @@
-package com.sparta.instahub.auth.dto;
+package com.sparta.instahub.domain.auth.dto;
 
-import com.sparta.instahub.auth.entity.UserRole;
-import com.sparta.instahub.auth.entity.UserStatus;
+import com.sparta.instahub.domain.auth.entity.UserRole;
+import com.sparta.instahub.domain.auth.entity.UserStatus;
 import lombok.Getter;
 import lombok.Setter;
 

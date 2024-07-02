@@ -1,7 +1,7 @@
-package com.sparta.instahub.profile.entity;
+package com.sparta.instahub.domain.profile.entity;
 
 
-import com.sparta.instahub.auth.entity.User;
+import com.sparta.instahub.domain.auth.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

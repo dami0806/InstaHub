@@ -1,13 +1,13 @@
-package com.sparta.instahub.comment.service;
+package com.sparta.instahub.domain.comment.service;
 
-import com.sparta.instahub.auth.entity.User;
-import com.sparta.instahub.auth.service.UserService;
-import com.sparta.instahub.comment.Repository.CommentRepository;
-import com.sparta.instahub.comment.dto.CommentRequestDto;
-import com.sparta.instahub.comment.dto.CommentResponseDto;
-import com.sparta.instahub.comment.entity.Comment;
-import com.sparta.instahub.post.entity.Post;
-import com.sparta.instahub.post.repository.PostRepository;
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.auth.service.UserService;
+import com.sparta.instahub.domain.comment.Repository.CommentRepository;
+import com.sparta.instahub.domain.comment.dto.CommentRequestDto;
+import com.sparta.instahub.domain.comment.dto.CommentResponseDto;
+import com.sparta.instahub.domain.comment.entity.Comment;
+import com.sparta.instahub.domain.post.entity.Post;
+import com.sparta.instahub.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

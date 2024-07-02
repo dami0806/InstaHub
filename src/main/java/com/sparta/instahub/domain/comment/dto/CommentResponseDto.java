@@ -1,6 +1,6 @@
-package com.sparta.instahub.comment.dto;
+package com.sparta.instahub.domain.comment.dto;
 
-import com.sparta.instahub.comment.entity.Comment;
+import com.sparta.instahub.domain.comment.entity.Comment;
 import lombok.Getter;
 
 @Getter

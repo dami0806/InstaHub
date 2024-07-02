@@ -1,10 +1,10 @@
-package com.sparta.instahub.auth.filter;
+package com.sparta.instahub.domain.auth.filter;
 
-import com.sparta.instahub.auth.entity.User;
-import com.sparta.instahub.auth.entity.UserStatus;
-import com.sparta.instahub.auth.jwt.JwtUtil;
-import com.sparta.instahub.auth.repository.UserRepository;
-import com.sparta.instahub.auth.service.UserDetailsServiceImpl;
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.auth.entity.UserStatus;
+import com.sparta.instahub.domain.auth.jwt.JwtUtil;
+import com.sparta.instahub.domain.auth.repository.UserRepository;
+import com.sparta.instahub.domain.auth.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

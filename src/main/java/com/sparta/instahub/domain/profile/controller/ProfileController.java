@@ -1,16 +1,14 @@
-package com.sparta.instahub.profile.controller;
+package com.sparta.instahub.domain.profile.controller;
 
 
-import com.sparta.instahub.profile.dto.PasswordRequestDto;
-import com.sparta.instahub.profile.dto.PasswordResponseDto;
-import com.sparta.instahub.profile.dto.ProfileRequestDto;
-import com.sparta.instahub.profile.dto.ProfileResponseDto;
-import com.sparta.instahub.profile.entity.PasswordHistory;
-import com.sparta.instahub.profile.entity.Profile;
-import com.sparta.instahub.profile.service.ProfileService;
+import com.sparta.instahub.domain.profile.dto.PasswordRequestDto;
+import com.sparta.instahub.domain.profile.dto.PasswordResponseDto;
+import com.sparta.instahub.domain.profile.dto.ProfileRequestDto;
+import com.sparta.instahub.domain.profile.dto.ProfileResponseDto;
+import com.sparta.instahub.domain.profile.entity.Profile;
+import com.sparta.instahub.domain.profile.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

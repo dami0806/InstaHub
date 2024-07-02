@@ -1,10 +1,10 @@
-package com.sparta.instahub.admin.controller;
+package com.sparta.instahub.domain.admin.controller;
 
-import com.sparta.instahub.admin.service.AdminService;
-import com.sparta.instahub.auth.entity.User;
-import com.sparta.instahub.post.dto.PostRequestDto;
-import com.sparta.instahub.post.dto.PostResponseDto;
-import com.sparta.instahub.post.entity.Post;
+import com.sparta.instahub.domain.admin.service.AdminService;
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.post.dto.PostRequestDto;
+import com.sparta.instahub.domain.post.dto.PostResponseDto;
+import com.sparta.instahub.domain.post.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

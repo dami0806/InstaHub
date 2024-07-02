@@ -1,17 +1,15 @@
-package com.sparta.instahub.auth.service;
+package com.sparta.instahub.domain.auth.service;
 
-import com.sparta.instahub.auth.dto.TokenResponseDto;
-import com.sparta.instahub.auth.entity.*;
-import com.sparta.instahub.auth.jwt.JwtUtil;
-import com.sparta.instahub.auth.repository.UserRepository;
-import com.sparta.instahub.profile.dto.PasswordRequestDto;
-import com.sparta.instahub.profile.entity.PasswordHistory;
-import com.sparta.instahub.profile.entity.Profile;
-import com.sparta.instahub.profile.repository.PasswordHistoryRepository;
-import com.sparta.instahub.profile.service.ProfileService;
+import com.sparta.instahub.domain.auth.dto.TokenResponseDto;
+import com.sparta.instahub.domain.auth.jwt.JwtUtil;
+import com.sparta.instahub.domain.auth.repository.UserRepository;
+import com.sparta.instahub.domain.auth.entity.*;
+import com.sparta.instahub.domain.profile.dto.PasswordRequestDto;
+import com.sparta.instahub.domain.profile.entity.PasswordHistory;
+import com.sparta.instahub.domain.profile.entity.Profile;
+import com.sparta.instahub.domain.profile.repository.PasswordHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

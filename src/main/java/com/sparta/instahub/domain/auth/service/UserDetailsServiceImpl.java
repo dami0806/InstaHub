@@ -1,7 +1,7 @@
-package com.sparta.instahub.auth.service;
+package com.sparta.instahub.domain.auth.service;
 
-import com.sparta.instahub.auth.entity.User;
-import com.sparta.instahub.auth.repository.UserRepository;
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.auth.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

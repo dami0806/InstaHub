@@ -1,4 +1,4 @@
-package com.sparta.instahub.post.dto;
+package com.sparta.instahub.domain.post.dto;
 
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;

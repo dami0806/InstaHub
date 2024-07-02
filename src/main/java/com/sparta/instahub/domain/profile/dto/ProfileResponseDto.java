@@ -1,4 +1,4 @@
-package com.sparta.instahub.profile.dto;
+package com.sparta.instahub.domain.profile.dto;
 
 import lombok.Getter;
 

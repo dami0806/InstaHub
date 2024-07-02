@@ -1,6 +1,6 @@
-package com.sparta.instahub.auth.repository;
+package com.sparta.instahub.domain.auth.repository;
 
-import com.sparta.instahub.auth.entity.User;
+import com.sparta.instahub.domain.auth.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

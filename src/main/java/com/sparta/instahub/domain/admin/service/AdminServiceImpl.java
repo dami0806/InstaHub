@@ -1,18 +1,17 @@
-package com.sparta.instahub.admin.service;
+package com.sparta.instahub.domain.admin.service;
 
-import com.sparta.instahub.auth.entity.User;
-import com.sparta.instahub.auth.entity.UserRole;
-import com.sparta.instahub.auth.entity.UserStatus;
-import com.sparta.instahub.auth.service.UserServiceImpl;
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.auth.entity.UserRole;
+import com.sparta.instahub.domain.auth.entity.UserStatus;
+import com.sparta.instahub.domain.auth.service.UserServiceImpl;
 import com.sparta.instahub.exception.UnauthorizedException;
-import com.sparta.instahub.post.entity.Post;
-import com.sparta.instahub.post.service.PostService;
+import com.sparta.instahub.domain.post.entity.Post;
+import com.sparta.instahub.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service

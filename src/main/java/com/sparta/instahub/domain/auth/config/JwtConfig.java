@@ -1,7 +1,7 @@
-package com.sparta.instahub.auth.config;
+package com.sparta.instahub.domain.auth.config;
 
 
-import com.sparta.instahub.auth.jwt.JwtUtil;
+import com.sparta.instahub.domain.auth.jwt.JwtUtil;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.sparta.instahub.comment.dto;
+package com.sparta.instahub.domain.comment.dto;
 
 import lombok.Getter;
 import lombok.Setter;

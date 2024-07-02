@@ -1,16 +1,15 @@
-package com.sparta.instahub.post.controller;
+package com.sparta.instahub.domain.post.controller;
 
-import com.sparta.instahub.post.dto.PostRequestDto;
-import com.sparta.instahub.post.dto.PostResponseDto;
-import com.sparta.instahub.post.entity.Post;
-import com.sparta.instahub.post.service.PostService;
+import com.sparta.instahub.domain.post.dto.PostRequestDto;
+import com.sparta.instahub.domain.post.dto.PostResponseDto;
+import com.sparta.instahub.domain.post.entity.Post;
+import com.sparta.instahub.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;

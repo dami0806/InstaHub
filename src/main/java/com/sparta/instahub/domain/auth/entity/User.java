@@ -1,16 +1,14 @@
-package com.sparta.instahub.auth.entity;
+package com.sparta.instahub.domain.auth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sparta.instahub.comment.entity.Comment;
+import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.common.entity.BaseEntity;
-import com.sparta.instahub.post.entity.Post;
-import com.sparta.instahub.profile.entity.PasswordHistory;
-import com.sparta.instahub.profile.entity.Profile;
+import com.sparta.instahub.domain.post.entity.Post;
+import com.sparta.instahub.domain.profile.entity.PasswordHistory;
+import com.sparta.instahub.domain.profile.entity.Profile;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.util.List;
 
@@ -18,7 +16,8 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Where(clause = "user_status = 'ACTIVE'")
 @JsonIgnoreProperties({"posts", "comments", "profile"})
 public class User extends BaseEntity {
 
@@ -46,6 +45,7 @@ public class User extends BaseEntity {
     // 사용자 상태
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+
     private UserStatus userStatus;
 
     // 사용자 역할

@@ -1,15 +1,15 @@
-package com.sparta.instahub.profile.service;
+package com.sparta.instahub.domain.profile.service;
 
-import com.sparta.instahub.auth.entity.User;
-import com.sparta.instahub.auth.repository.UserRepository;
-import com.sparta.instahub.auth.service.UserService;
-import com.sparta.instahub.profile.dto.PasswordRequestDto;
-import com.sparta.instahub.profile.dto.PasswordResponseDto;
-import com.sparta.instahub.profile.dto.ProfileRequestDto;
-import com.sparta.instahub.profile.entity.PasswordHistory;
-import com.sparta.instahub.profile.entity.Profile;
-import com.sparta.instahub.profile.repository.PasswordHistoryRepository;
-import com.sparta.instahub.profile.repository.ProfileRepository;
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.auth.repository.UserRepository;
+import com.sparta.instahub.domain.auth.service.UserService;
+import com.sparta.instahub.domain.profile.dto.PasswordRequestDto;
+import com.sparta.instahub.domain.profile.dto.PasswordResponseDto;
+import com.sparta.instahub.domain.profile.dto.ProfileRequestDto;
+import com.sparta.instahub.domain.profile.entity.PasswordHistory;
+import com.sparta.instahub.domain.profile.repository.PasswordHistoryRepository;
+import com.sparta.instahub.domain.profile.repository.ProfileRepository;
+import com.sparta.instahub.domain.profile.entity.Profile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;

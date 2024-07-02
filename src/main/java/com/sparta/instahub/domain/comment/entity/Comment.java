@@ -1,9 +1,9 @@
-package com.sparta.instahub.comment.entity;
+package com.sparta.instahub.domain.comment.entity;
 
-import com.sparta.instahub.auth.entity.User;
-import com.sparta.instahub.comment.dto.CommentRequestDto;
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.comment.dto.CommentRequestDto;
 import com.sparta.instahub.common.entity.BaseEntity;
-import com.sparta.instahub.post.entity.Post;
+import com.sparta.instahub.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

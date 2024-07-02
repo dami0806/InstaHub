@@ -1,12 +1,12 @@
-package com.sparta.instahub.auth.controller;
+package com.sparta.instahub.domain.auth.controller;
 
-import com.sparta.instahub.auth.dto.RefreshTokenRequestDto;
-import com.sparta.instahub.auth.dto.TokenResponseDto;
-import com.sparta.instahub.auth.entity.LoginRequest;
-import com.sparta.instahub.auth.entity.LoginResponse;
-import com.sparta.instahub.auth.entity.SignupRequest;
-import com.sparta.instahub.auth.jwt.JwtUtil;
-import com.sparta.instahub.auth.service.UserService;
+import com.sparta.instahub.domain.auth.dto.RefreshTokenRequestDto;
+import com.sparta.instahub.domain.auth.dto.TokenResponseDto;
+import com.sparta.instahub.domain.auth.entity.LoginRequest;
+import com.sparta.instahub.domain.auth.entity.LoginResponse;
+import com.sparta.instahub.domain.auth.entity.SignupRequest;
+import com.sparta.instahub.domain.auth.jwt.JwtUtil;
+import com.sparta.instahub.domain.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

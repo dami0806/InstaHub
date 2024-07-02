@@ -1,19 +1,18 @@
-package com.sparta.instahub.post.service;
+package com.sparta.instahub.domain.post.service;
 
-import com.sparta.instahub.auth.entity.User;
-import com.sparta.instahub.auth.entity.UserRole;
-import com.sparta.instahub.auth.service.UserServiceImpl;
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.auth.entity.UserRole;
+import com.sparta.instahub.domain.auth.service.UserServiceImpl;
+import com.sparta.instahub.domain.post.entity.Post;
+import com.sparta.instahub.domain.post.repository.PostRepository;
 import com.sparta.instahub.exception.InaccessiblePostException;
 import com.sparta.instahub.exception.UnauthorizedException;
-import com.sparta.instahub.post.entity.Post;
-import com.sparta.instahub.post.repository.PostRepository;
 import com.sparta.instahub.s3.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 // Post 엔티티에 대한 비즈니스 로직을 처리하는 서비스 클래스

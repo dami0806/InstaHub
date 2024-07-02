@@ -1,6 +1,6 @@
-package com.sparta.instahub.auth.config;
+package com.sparta.instahub.domain.auth.config;
 
-import com.sparta.instahub.auth.filter.JwtAuthenticationFilter;
+import com.sparta.instahub.domain.auth.filter.JwtAuthenticationFilter;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
