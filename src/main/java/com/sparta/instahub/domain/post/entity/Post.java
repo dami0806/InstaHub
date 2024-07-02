@@ -24,6 +24,7 @@ public class Post extends BaseEntity {
     // 기본 키
     @Id
     @Column(columnDefinition = "BINARY(16)")
+    @GeneratedValue(generator = "uuid2")
     private UUID id = UlidCreator.getMonotonicUlid().toUuid();
 
     // 작성자

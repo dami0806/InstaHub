@@ -5,7 +5,6 @@ import com.github.f4b6a3.ulid.UlidCreator;
 import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.common.entity.BaseEntity;
 import com.sparta.instahub.domain.post.entity.Post;
-import com.sparta.instahub.global.BaseTime.Auditable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
@@ -20,11 +19,12 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonIgnoreProperties({"posts", "comments", "profile"})
 //@Where(clause = "user_status = 'ACTIVE'")
-public class User implements Auditable {
+public class User extends BaseEntity {
 
     // 기본키
     @Id
     @Column(columnDefinition = "BINARY(16)")
+    @GeneratedValue(generator = "uuid2")
     private UUID id = UlidCreator.getMonotonicUlid().toUuid();
 
     // 사용자 ID
@@ -54,9 +54,6 @@ public class User implements Auditable {
     @Column(nullable = false)
     private UserRole userRole;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn
-    private DeviceToken deviceToken;
 
     // refreshToken
     @Column
@@ -126,15 +123,15 @@ public class User implements Auditable {
     }
 
     // 리프레시 토큰 업데이트
-    public void updateRefreshToken(String refreshToken) {
+    public void updateRefreshToken(final String refreshToken) {
         this.refreshToken = refreshToken;
     }
 
-    public void updateUserRole(UserRole userRole) {
+    public void updateUserRole(final UserRole userRole) {
         this.userRole = userRole;
     }
 
-    public void updateUserStatus(UserStatus userStatus) {
+    public void updateUserStatus(final UserStatus userStatus) {
         this.userStatus = userStatus;
     }
 
