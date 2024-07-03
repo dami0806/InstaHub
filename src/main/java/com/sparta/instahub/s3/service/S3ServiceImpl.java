@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.sparta.instahub.exception.InaccessibleImageException;
 import com.sparta.instahub.s3.entity.Image;
+import com.sparta.instahub.s3.exception.InvalidImageException;
 import com.sparta.instahub.s3.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,10 +49,15 @@ public class S3ServiceImpl implements S3Service {
     }
     // 파일을 S3에서 삭제하고 데이터베이스에서도 삭제하는 메서드
     public void deleteFile(String fileUrl) {
-        Image image = imageRepository.findByUrl(fileUrl);
-        if (image != null) {
-            amazonS3.deleteObject(bucketName, image.getName());
-            imageRepository.delete(image);
+        try {
+            Image image = imageRepository.findByUrl(fileUrl);
+            if (image != null) {
+                amazonS3.deleteObject(bucketName, image.getName());
+                imageRepository.delete(image);
+            }
+        }
+        catch (InvalidImageException e) {
+            throw new InvalidImageException("이미지을 삭제할 수 없습니다. " + e.getMessage());
         }
     }
 
@@ -62,6 +68,9 @@ public class S3ServiceImpl implements S3Service {
 
     // 파일 URL을 반환하는 메서드
     public String getFileUrl(String fileName) {
+        if (!amazonS3.doesObjectExist(bucketName, fileName)) {
+            throw new InvalidImageException("이미지을 업로드할 수 없습니다.");
+        }
         return amazonS3.getUrl(bucketName, fileName).toString();
     }
 }

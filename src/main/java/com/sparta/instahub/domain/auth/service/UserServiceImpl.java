@@ -2,6 +2,7 @@ package com.sparta.instahub.domain.auth.service;
 
 import com.sparta.instahub.domain.auth.dto.SignupRequestDto;
 import com.sparta.instahub.domain.auth.dto.TokenResponseDto;
+import com.sparta.instahub.domain.auth.exception.UnauthorizedException;
 import com.sparta.instahub.domain.auth.jwt.JwtUtil;
 import com.sparta.instahub.domain.auth.repository.UserRepository;
 import com.sparta.instahub.domain.auth.entity.*;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -242,8 +244,18 @@ public class UserServiceImpl implements UserService {
     }
 
     public User getUserByName(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return userRepository.findByUsername(username).orElseThrow(() ->
+                new UnauthorizedException("유저를 찾을수 없습니다."));
     }
+    public User getUserByNameActive(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new UnauthorizedException("유저를 찾을수 없습니다."));
+        if (user.getUserStatus() != UserStatus.ACTIVE) {
+            throw new UnauthorizedException("활성화된 사용자가 아닙니다.");
+        }
+        return user;
+    }
+
 
 //    @Override
 //    public User savePasswordHistory() {

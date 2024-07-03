@@ -4,7 +4,7 @@ import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.auth.entity.UserRole;
 import com.sparta.instahub.domain.auth.entity.UserStatus;
 import com.sparta.instahub.domain.auth.service.UserServiceImpl;
-import com.sparta.instahub.exception.UnauthorizedException;
+import com.sparta.instahub.domain.auth.exception.UnauthorizedException;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;

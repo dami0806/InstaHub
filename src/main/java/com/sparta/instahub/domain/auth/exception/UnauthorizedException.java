@@ -1,4 +1,4 @@
-package com.sparta.instahub.exception;
+package com.sparta.instahub.domain.auth.exception;
 
 public class UnauthorizedException extends RuntimeException {
 

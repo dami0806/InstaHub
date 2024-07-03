@@ -1,6 +1,7 @@
 package com.sparta.instahub.domain.post.service;
 
 import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.auth.exception.UnauthorizedException;
 import com.sparta.instahub.domain.auth.service.UserServiceImpl;
 import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
@@ -49,7 +50,7 @@ public class PostServiceImpl implements PostService {
     public Post createPost(String title, String content, MultipartFile image, String username) {
         try {
             // 현재 로그인된 사용자 가져오기
-            User user = userService.getUserByName(username);
+            User user = userService.getUserByNameActive(username);
 
             String imageUrl = null;
             if (image != null && !image.isEmpty()) {
@@ -72,28 +73,27 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public Post updatePost(UUID id, String title, String content, MultipartFile image, String username) {
-//       try {
-//           // 현재 로그인된 사용자 가져오기
-//           User currentUser = userService.getUserByName(username);
-//           Post post = getPostById(id); // ID로 게시물 조회
-//
-//           if (!post.getUser().equals(currentUser)) {
-//               throw new UnauthorizedException("포스트 수정 권한이 없는 사용자 입니다.");
-//           }
-//           if (image != null && !image.isEmpty()) {
-//               if (post.getImageUrl() != null) {
-//                   s3Service.deleteFile(post.getImageUrl());
-//               }
-//               String imageUrl = s3Service.uploadFile(image);
-//               post.update(title, content, imageUrl);
-//           } else {
-//               post.update(title, content, post.getImageUrl());
-//           }
-//           return postRepository.save(post);
-//       } catch (InaccessiblePostException e) {
-//           throw new InaccessiblePostException("포스트를 수정할 수 없습니다.");
-//       }
-        return postRepository.save(null);
+       try {
+           // 현재 로그인된 사용자 가져오기
+           User currentUser = userService.getUserByName(username);
+           Post post = getPostById(id); // ID로 게시물 조회
+
+           if (!post.getUser().equals(currentUser)) {
+               throw new UnauthorizedException("포스트 수정 권한이 없는 사용자 입니다.");
+           }
+           if (image != null && !image.isEmpty()) {
+               if (post.getImageUrl() != null) {
+                   s3Service.deleteFile(post.getImageUrl());
+               }
+               String imageUrl = s3Service.uploadFile(image);
+               post.update(title, content, imageUrl);
+           } else {
+               post.update(title, content, post.getImageUrl());
+           }
+           return postRepository.save(post);
+       } catch (InaccessiblePostException e) {
+           throw new InaccessiblePostException("포스트를 수정할 수 없습니다.");
+       }
     }
 
     // 게시물 삭제

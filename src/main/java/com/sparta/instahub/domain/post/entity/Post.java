@@ -68,12 +68,10 @@ public class Post extends BaseEntity {
         this.createdAt = LocalDateTime.now(); // 현재 시간을 생성일시로 설정
         this.updatedAt = LocalDateTime.now(); // 현재 시간을 수정일시로 설정
     }
-
-    // 게시물 업데이트 메서드
     public void update(String title, String content, String imageUrl) {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
-        this.updatedAt = LocalDateTime.now(); // 현재 시간을 수정일시로 설정
+        this.updatedAt = LocalDateTime.now();
     }
 }

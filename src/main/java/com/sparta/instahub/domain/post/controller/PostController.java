@@ -53,7 +53,7 @@ public class PostController {
     // 새 게시물 생성 요청 처리
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@ModelAttribute PostRequestDto postRequestDto,
-                                                      @AuthenticationPrincipal UserDetails userDetails) throws IOException {
+                                                      @AuthenticationPrincipal UserDetails userDetails) {
         Post post = postService.createPost(postRequestDto.getTitle(), postRequestDto.getContent(), postRequestDto.getImage(), userDetails.getUsername());
         PostResponseDto postResponseDto = PostResponseDto.builder()
                 .id(post.getId())
@@ -71,8 +71,11 @@ public class PostController {
     @PatchMapping("/{id}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable UUID id,
                                                       @ModelAttribute PostRequestDto postRequestDto,
-                                                      @AuthenticationPrincipal UserDetails userDetails) throws IOException {
-        Post post = postService.updatePost(id, postRequestDto.getTitle(), postRequestDto.getContent(),postRequestDto.getImage(), userDetails.getUsername());
+                                                      @AuthenticationPrincipal UserDetails userDetails){
+        Post post = postService.updatePost(id, postRequestDto.getTitle(),
+                postRequestDto.getContent(),
+                postRequestDto.getImage(),
+                userDetails.getUsername());
         PostResponseDto postResponseDto = PostResponseDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())

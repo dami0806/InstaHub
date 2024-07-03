@@ -27,6 +27,4 @@ public enum FileContentType {
         }
         return null;
     }
-
-
 }
