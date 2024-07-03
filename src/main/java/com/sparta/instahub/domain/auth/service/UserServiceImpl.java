@@ -1,5 +1,6 @@
 package com.sparta.instahub.domain.auth.service;
 
+import com.sparta.instahub.domain.auth.dto.SignupRequestDto;
 import com.sparta.instahub.domain.auth.dto.TokenResponseDto;
 import com.sparta.instahub.domain.auth.jwt.JwtUtil;
 import com.sparta.instahub.domain.auth.repository.UserRepository;
@@ -38,10 +39,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void signup(SignupRequest signupRequest) {
+    public void signup(SignupRequestDto signupRequest) {
         String userId = signupRequest.getUserId();
         String password = signupRequest.getPassword();
         String email = signupRequest.getEmail();
+        String username = signupRequest.getUsername();
+        UserRole userRole = signupRequest.getUserRole();
 
         if (!userId.matches("^[a-zA-Z0-9]{10,20}$")) {
             throw new RuntimeException("아이디는 최소 10자 이상, 20자 이하이며 알파벳 대소문자와 숫자로 구성되어야 합니다.");
@@ -59,6 +62,10 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("중복된 이메일이 존재합니다.");
         }
 
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new RuntimeException("중복된 사용자 이름이 존재합니다.");
+        }
+
         String encodedPassword = passwordEncoder.encode(password);
 
         User user = User.builder()
@@ -67,7 +74,7 @@ public class UserServiceImpl implements UserService {
                 .email(email)
                 .password(encodedPassword)
                 .userStatus(UserStatus.ACTIVE)
-                .userRole(UserRole.USER)
+                .userRole(userRole)
                 .build();
 
 //        Profile profile = Profile.builder()

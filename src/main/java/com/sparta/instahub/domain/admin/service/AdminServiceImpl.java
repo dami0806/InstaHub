@@ -92,7 +92,6 @@ public class AdminServiceImpl implements AdminService {
         return postService.createPost(title, content, imageUrl, currentAdmin.getUsername());
     }
 
-
     // 모든 게시글 삭제
     @Transactional
     public void deleteAllPosts() {

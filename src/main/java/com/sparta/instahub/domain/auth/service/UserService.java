@@ -1,9 +1,9 @@
 package com.sparta.instahub.domain.auth.service;
 
+import com.sparta.instahub.domain.auth.dto.SignupRequestDto;
 import com.sparta.instahub.domain.auth.dto.TokenResponseDto;
 import com.sparta.instahub.domain.auth.entity.LoginRequest;
 import com.sparta.instahub.domain.auth.entity.LoginResponse;
-import com.sparta.instahub.domain.auth.entity.SignupRequest;
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.auth.entity.UserRole;
 import com.sparta.instahub.domain.auth.entity.UserStatus;
@@ -17,7 +17,7 @@ public interface UserService {
     User update(UUID userId, String newEmail, String newUserId);
 
     // 회원가입
-    void signup(SignupRequest signupRequest);
+    void signup(SignupRequestDto signupRequest);
 
     // 로그인
     LoginResponse login(LoginRequest loginRequest);
@@ -47,7 +47,5 @@ public interface UserService {
 
     User unblockUser(UUID id);
 
-
     User getUserByName(String username);
-
 }

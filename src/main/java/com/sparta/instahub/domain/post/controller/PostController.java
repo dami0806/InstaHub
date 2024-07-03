@@ -32,19 +32,6 @@ public class PostController {
     public ResponseEntity<List<PostResponseDto>> getAllPosts() {
         List<PostResponseDto> postResponseDtos = postService.getAllPosts();
         return ResponseEntity.ok(postResponseDtos);
-
-//        List<PostResponseDto> postResponseDtos = posts.stream()
-//                .map(post -> PostResponseDto.builder()
-//                        .id(post.getId())
-//                        .title(post.getTitle())
-//                        .content(post.getContent())
-//                        .author(post.getUser().getUsername())
-//                        .imageUrl(post.getImageUrl())
-//                        .createdAt(post.getCreatedAt())
-//                        .updatedAt(post.getUpdatedAt())
-//                        .build())
-//                .collect(Collectors.toList());
-//        return new ResponseEntity<>(postResponseDtos, HttpStatus.OK);
     }
 
     // ID로 게시물 조회 요청 처리

@@ -1,10 +1,10 @@
 package com.sparta.instahub.domain.auth.controller;
 
 import com.sparta.instahub.domain.auth.dto.RefreshTokenRequestDto;
+import com.sparta.instahub.domain.auth.dto.SignupRequestDto;
 import com.sparta.instahub.domain.auth.dto.TokenResponseDto;
 import com.sparta.instahub.domain.auth.entity.LoginRequest;
 import com.sparta.instahub.domain.auth.entity.LoginResponse;
-import com.sparta.instahub.domain.auth.entity.SignupRequest;
 import com.sparta.instahub.domain.auth.jwt.JwtUtil;
 import com.sparta.instahub.domain.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class AuthRestController {
      * @return
      */
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<String> signup(@RequestBody SignupRequestDto signupRequest) {
         userService.signup(signupRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공");
     }
@@ -46,7 +46,7 @@ public class AuthRestController {
 
         // 각 토큰을 별도의 헤더에 설정
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + accessToken);
+        headers.set("Authorization", accessToken);
         headers.set("Refresh-Token", refreshToken);
 
         return new ResponseEntity<>("로그인 성공", headers, HttpStatus.OK);

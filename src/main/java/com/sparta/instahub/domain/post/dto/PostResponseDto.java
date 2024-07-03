@@ -13,13 +13,13 @@ import java.util.UUID;
 @AllArgsConstructor
 // 게시물 응답
 public class PostResponseDto {
-    private UUID id; // 게시물 ID
-    private String title; // 게시물 제목
-    private String content; // 게시물 내용
-    private String author; // 게시물 작성자
-    private String imageUrl; // 게시물 이미지
-    private LocalDateTime createdAt; // 생성일시
-    private LocalDateTime updatedAt; // 수정일시
+    private final UUID id; // 게시물 ID
+    private final String title; // 게시물 제목
+    private final String content; // 게시물 내용
+    private final String author; // 게시물 작성자
+    private final String imageUrl; // 게시물 이미지
+    private final LocalDateTime createdAt; // 생성일시
+    private final LocalDateTime updatedAt; // 수정일시
 
     public PostResponseDto(final Post post) {
         this.id = post.getId();

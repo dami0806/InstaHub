@@ -1,13 +1,11 @@
 package com.sparta.instahub.domain.post.service;
 
 import com.sparta.instahub.domain.auth.entity.User;
-import com.sparta.instahub.domain.auth.entity.UserRole;
 import com.sparta.instahub.domain.auth.service.UserServiceImpl;
 import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.repository.PostRepository;
-import com.sparta.instahub.exception.InaccessiblePostException;
-import com.sparta.instahub.exception.UnauthorizedException;
+import com.sparta.instahub.domain.post.exception.InaccessiblePostException;
 import com.sparta.instahub.s3.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,7 +40,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public Post getPostById(UUID id) {
         return postRepository.findById(id).orElseThrow(() ->
-                new InaccessiblePostException("Invalid post ID"));
+                new InaccessiblePostException("post ID가 잘못된 ID입니다."));
     }
 
     // 새 게시물 생성
