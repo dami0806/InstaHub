@@ -37,34 +37,29 @@ public class PostController {
     // ID로 게시물 조회 요청 처리
     @GetMapping("/{id}")
     public ResponseEntity<PostResponseDto> getPostById(@PathVariable UUID id) {
-        Post post = postService.getPostById(id);
-        PostResponseDto postResponseDto = PostResponseDto.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .author(post.getUser().getUsername())
-                .imageUrl(post.getImageUrl())
-                .createdAt(post.getCreatedAt())
-                .updatedAt(post.getUpdatedAt())
-                .build();
-        return new ResponseEntity<>(postResponseDto, HttpStatus.OK);
+        PostResponseDto postResponseDto = postService.getPostById(id);
+        return ResponseEntity.ok(postResponseDto);
     }
 
     // 새 게시물 생성 요청 처리
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@ModelAttribute PostRequestDto postRequestDto,
                                                       @AuthenticationPrincipal UserDetails userDetails) {
-        Post post = postService.createPost(postRequestDto.getTitle(), postRequestDto.getContent(), postRequestDto.getImage(), userDetails.getUsername());
-        PostResponseDto postResponseDto = PostResponseDto.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .author(post.getUser().getUsername())
-                .imageUrl(post.getImageUrl())
-                .createdAt(post.getCreatedAt())
-                .updatedAt(post.getUpdatedAt())
-                .build();
-        return new ResponseEntity<>(postResponseDto, HttpStatus.CREATED);
+        PostResponseDto post = postService.createPost(postRequestDto.getTitle(),
+                postRequestDto.getContent(),
+                postRequestDto.getImage(),
+                userDetails.getUsername());
+
+//        PostResponseDto postResponseDto = PostResponseDto.builder()
+//                .id(post.getId())
+//                .title(post.getTitle())
+//                .content(post.getContent())
+//                .author(post.getAuthor())
+//                .imageUrl(post.getImageUrl())
+//                .createdAt(post.getCreatedAt())
+//                .updatedAt(post.getUpdatedAt())
+//                .build();
+        return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
     // 게시물 수정 요청 처리
@@ -72,20 +67,12 @@ public class PostController {
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable UUID id,
                                                       @ModelAttribute PostRequestDto postRequestDto,
                                                       @AuthenticationPrincipal UserDetails userDetails){
-        Post post = postService.updatePost(id, postRequestDto.getTitle(),
+        PostResponseDto post = postService.updatePost(id, postRequestDto.getTitle(),
                 postRequestDto.getContent(),
                 postRequestDto.getImage(),
                 userDetails.getUsername());
-        PostResponseDto postResponseDto = PostResponseDto.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .author(post.getUser().getUsername())
-                .imageUrl(post.getImageUrl())
-                .createdAt(post.getCreatedAt())
-                .updatedAt(post.getUpdatedAt())
-                .build();
-        return new ResponseEntity<>(postResponseDto, HttpStatus.OK);
+
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
 

@@ -3,6 +3,7 @@ package com.sparta.instahub.domain.admin.service;
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.auth.entity.UserRole;
 import com.sparta.instahub.domain.auth.entity.UserStatus;
+import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +41,7 @@ public interface AdminService {
     User unblockUser(UUID id);
 
     // 공지글 등록
-    Post createAnnouncement(String title, String content, MultipartFile imageUrl) throws IOException;
+    PostResponseDto createAnnouncement(String title, String content, MultipartFile imageUrl);
 
     // 모든 게시글 삭제
     void deleteAllPosts();

@@ -73,17 +73,11 @@ public class AdminController {
     // 공지글 등록
     @PostMapping("/announcement")
     public ResponseEntity<PostResponseDto> createAnnouncement(@ModelAttribute PostRequestDto postRequestDto) throws IOException {
-        Post post = adminService.createAnnouncement(postRequestDto.getTitle(), postRequestDto.getContent(), postRequestDto.getImage());
-        PostResponseDto postResponseDto = PostResponseDto.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .author(post.getUser().getUsername())
-                .imageUrl(post.getImageUrl())
-                .createdAt(post.getCreatedAt())
-                .updatedAt(post.getUpdatedAt())
-                .build();
-        return new ResponseEntity<>(postResponseDto, HttpStatus.CREATED);
+        PostResponseDto post = adminService.createAnnouncement(postRequestDto.getTitle(),
+                postRequestDto.getContent(),
+                postRequestDto.getImage());
+
+        return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
     // 모든 게시글 삭제

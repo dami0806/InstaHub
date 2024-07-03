@@ -3,6 +3,7 @@ package com.sparta.instahub.s3.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.sparta.instahub.exception.InaccessibleImageException;
+import com.sparta.instahub.s3.entity.FileContentType;
 import com.sparta.instahub.s3.entity.Image;
 import com.sparta.instahub.s3.exception.InvalidImageException;
 import com.sparta.instahub.s3.repository.ImageRepository;
@@ -27,6 +28,12 @@ public class S3ServiceImpl implements S3Service {
     // 파일을 S3에 업로드하고 파일 URL을 반환
     public String uploadFile(MultipartFile file){
         try {
+            // 파일 타입 검사
+            String contentType = file.getContentType();
+            if (FileContentType.getContentType(contentType) == null) {
+                throw new InvalidImageException("허용되지 않는 파일 타입입니다: " + contentType);
+            }
+
             String fileName = generateFileName(file.getOriginalFilename());
 
             ObjectMetadata metadata = new ObjectMetadata();
@@ -47,6 +54,7 @@ public class S3ServiceImpl implements S3Service {
             throw new InaccessibleImageException("이미지를 업로드할 수 없습니다. " + e.getMessage());
         }
     }
+    
     // 파일을 S3에서 삭제하고 데이터베이스에서도 삭제하는 메서드
     public void deleteFile(String fileUrl) {
         try {

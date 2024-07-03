@@ -5,14 +5,14 @@ import com.sparta.instahub.domain.comment.dto.CommentRequestDto;
 import com.sparta.instahub.common.entity.BaseEntity;
 import com.sparta.instahub.domain.post.entity.Post;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Setter
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="comment")
 public class Comment extends BaseEntity {
     @Id

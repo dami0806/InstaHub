@@ -5,6 +5,7 @@ import com.sparta.instahub.domain.auth.entity.UserRole;
 import com.sparta.instahub.domain.auth.entity.UserStatus;
 import com.sparta.instahub.domain.auth.service.UserServiceImpl;
 import com.sparta.instahub.domain.auth.exception.UnauthorizedException;
+import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -86,7 +87,7 @@ public class AdminServiceImpl implements AdminService {
 
     // 공지글 등록
     @Transactional
-    public Post createAnnouncement(String title, String content, MultipartFile imageUrl) {
+    public PostResponseDto createAnnouncement(String title, String content, MultipartFile imageUrl) {
         User currentAdmin = getCurrentAdmin();
         checkIfAdmin(currentAdmin);
         return postService.createPost(title, content, imageUrl, currentAdmin.getUsername());

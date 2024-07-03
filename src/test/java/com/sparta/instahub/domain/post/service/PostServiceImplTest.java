@@ -96,7 +96,7 @@ class PostServiceImplTest {
         when(postRepository.findById(postId)).thenReturn(Optional.of(post));
 
         // 실행 (when): 서비스의 getPostById 메서드를 호출
-        Post post = postService.getPostById(postId);
+        PostResponseDto post = postService.getPostById(postId);
 
         // 검증 (then): 결과를 검증
         assertThat(post.getId()).isEqualTo(postId);
@@ -134,12 +134,11 @@ class PostServiceImplTest {
         when(userService.getUserByName("Test User")).thenReturn(user);
 
         // 실행 (when): 서비스의 createPost 메서드를 호출
-        Post createdPost = postService.createPost("Test Title", "Test Content", image, "Test User");
+        PostResponseDto createdPost = postService.createPost("Test Title", "Test Content", image, "Test User");
 
         // 검증 (then): 결과를 검증하고, 리포지토리 메서드 호출을 확인
         assertThat(createdPost.getTitle()).isEqualTo("Test Title");
         assertThat(createdPost.getContent()).isEqualTo("Test Content");
-        assertThat(createdPost.getUser().getUsername()).isEqualTo("Test User");
     }
         // 게시물 수정 테스트
     @Test

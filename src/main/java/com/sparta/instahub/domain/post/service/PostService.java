@@ -14,13 +14,14 @@ public interface PostService {
     List<PostResponseDto> getAllPosts();
 
     // ID로 게시물 조회
-    Post getPostById(UUID id);
+    Post getPost(UUID id);
 
+    PostResponseDto getPostById(UUID id);
     // 새 게시물 생성
-    Post createPost(String title, String content, MultipartFile imageUrl, String username);
+    PostResponseDto createPost(String title, String content, MultipartFile imageUrl, String username);
 
     // 게시물 수정
-    Post updatePost(UUID id, String title, String content, MultipartFile imageUrl, String username);
+    PostResponseDto updatePost(UUID id, String title, String content, MultipartFile imageUrl, String username);
 
     // 게시물 삭제
     void deletePost(UUID id, String username);
