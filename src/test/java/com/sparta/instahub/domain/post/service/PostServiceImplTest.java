@@ -80,7 +80,7 @@ class PostServiceImplTest {
         when(postRepository.findAll()).thenReturn(List.of(post));
 
         // 실행 (when): 서비스의 getAllPosts 메서드를 호출
-        List<PostResponseDto> result = postService.getAllPosts();
+        List<PostResponseDto> result = postService.getAllPosts(0,3,"Test User");
 
         // 검증 (then): 결과를 검증하고, 리포지토리 메서드 호출
         assertThat(result).hasSize(1);

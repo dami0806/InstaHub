@@ -31,9 +31,10 @@ public class PostController {
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPosts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy
     ) {
-        List<PostResponseDto> postResponseDtos = postService.getAllPosts(page, size);
+        List<PostResponseDto> postResponseDtos = postService.getAllPosts(page, size, sortBy);
         return ResponseEntity.ok(postResponseDtos);
     }
 

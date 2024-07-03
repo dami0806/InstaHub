@@ -11,12 +11,13 @@ import java.util.UUID;
 
 public interface PostService {
 
-    List<PostResponseDto> getAllPosts(int page, int size);
+    List<PostResponseDto> getAllPosts(int page, int size, String sortBy);
 
     // ID로 게시물 조회
     Post getPost(UUID id);
 
     PostResponseDto getPostById(UUID id);
+
     // 새 게시물 생성
     PostResponseDto createPost(String title, String content, MultipartFile imageUrl, String username);
 

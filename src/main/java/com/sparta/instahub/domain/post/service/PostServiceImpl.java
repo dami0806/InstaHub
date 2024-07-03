@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,8 +35,9 @@ public class PostServiceImpl implements PostService {
     // 모든 게시물 조회
     @Override
     @Transactional(readOnly = true)
-    public List<PostResponseDto> getAllPosts(int page, int size) {
-        Pageable pageable = PageRequest.of( page, size);
+    public List<PostResponseDto> getAllPosts(int page, int size, String sortBy) {
+        Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
+        Pageable pageable = PageRequest.of( page, size, sort);
         Page<Post> postsPage = postRepository.findAll(pageable);
         //List<Post> posts = postRepository.findAll();
         return postsPage.stream()
