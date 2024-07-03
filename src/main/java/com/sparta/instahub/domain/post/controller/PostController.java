@@ -45,20 +45,12 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@ModelAttribute PostRequestDto postRequestDto,
                                                       @AuthenticationPrincipal UserDetails userDetails) {
-        PostResponseDto post = postService.createPost(postRequestDto.getTitle(),
+        PostResponseDto post = postService.createPost(
+                postRequestDto.getTitle(),
                 postRequestDto.getContent(),
                 postRequestDto.getImage(),
                 userDetails.getUsername());
 
-//        PostResponseDto postResponseDto = PostResponseDto.builder()
-//                .id(post.getId())
-//                .title(post.getTitle())
-//                .content(post.getContent())
-//                .author(post.getAuthor())
-//                .imageUrl(post.getImageUrl())
-//                .createdAt(post.getCreatedAt())
-//                .updatedAt(post.getUpdatedAt())
-//                .build();
         return new ResponseEntity<>(post, HttpStatus.CREATED);
     }
 
@@ -66,15 +58,15 @@ public class PostController {
     @PatchMapping("/{id}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable UUID id,
                                                       @ModelAttribute PostRequestDto postRequestDto,
-                                                      @AuthenticationPrincipal UserDetails userDetails){
-        PostResponseDto post = postService.updatePost(id, postRequestDto.getTitle(),
+                                                      @AuthenticationPrincipal UserDetails userDetails) {
+        PostResponseDto post = postService.updatePost(id,
+                postRequestDto.getTitle(),
                 postRequestDto.getContent(),
                 postRequestDto.getImage(),
                 userDetails.getUsername());
 
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
-
 
     // 게시물 삭제 요청 처리
     @DeleteMapping("/{id}")

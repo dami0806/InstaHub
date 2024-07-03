@@ -54,7 +54,7 @@ public class S3ServiceImpl implements S3Service {
             throw new InaccessibleImageException("이미지를 업로드할 수 없습니다. " + e.getMessage());
         }
     }
-    
+
     // 파일을 S3에서 삭제하고 데이터베이스에서도 삭제하는 메서드
     public void deleteFile(String fileUrl) {
         try {
