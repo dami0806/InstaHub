@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface PostService {
 
-    List<PostResponseDto> getAllPosts();
+    List<PostResponseDto> getAllPosts(int page, int size);
 
     // ID로 게시물 조회
     Post getPost(UUID id);
