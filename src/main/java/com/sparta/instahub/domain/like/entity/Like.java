@@ -7,6 +7,7 @@ import com.sparta.instahub.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "post_like")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Like {
     // 고유 식별자
     @Id
@@ -44,4 +46,5 @@ public class Like {
         this.comment = comment;
         this.type = type;
     }
+
 }

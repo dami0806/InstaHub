@@ -1,5 +1,9 @@
 package com.sparta.instahub.domain.like.service;
 
+import com.sparta.instahub.domain.comment.dto.CommentResponseDto;
+import com.sparta.instahub.domain.post.dto.PostResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -13,4 +17,9 @@ public interface LikeService {
 
     void likeComment(UUID userId, UUID commentId);
     void unlikeComment(UUID userId, UUID commentId);
+
+    Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable);
+
+    Page<CommentResponseDto> getLikedComments(UUID userId, Pageable pageable);
+
 }

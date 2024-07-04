@@ -2,14 +2,18 @@ package com.sparta.instahub.domain.like.controller;
 
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.auth.service.UserService;
+import com.sparta.instahub.domain.comment.dto.CommentResponseDto;
 import com.sparta.instahub.domain.like.service.LikeService;
+import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -53,5 +57,27 @@ public class LikeController {
         User user = userService.getUserByName(userDetails.getUsername());
         likeService.unlikeComment(user.getId(), commentId);
         return ResponseEntity.ok().build();
+    }
+
+    // 좋아요한 게시글 모두 보기
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<Page<PostResponseDto>> getLikedPosts(@RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "5") int size,
+                                                               @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getUserByName(userDetails.getUsername());
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PostResponseDto> likedPosts = likeService.getLikedPosts(user.getId(), pageable);
+        return ResponseEntity.ok(likedPosts);
+    }
+
+    // 좋아요한 댓글 모두 보기
+    @GetMapping("/comments/{commentId}")
+    public ResponseEntity<Page<CommentResponseDto>> getLikedComments(@RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "5") int size,
+                                                                  @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userService.getUserByName(userDetails.getUsername());
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CommentResponseDto> likedComments = likeService.getLikedComments(user.getId(), pageable);
+        return ResponseEntity.ok(likedComments);
     }
 }

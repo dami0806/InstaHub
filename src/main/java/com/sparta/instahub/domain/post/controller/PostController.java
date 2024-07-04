@@ -42,6 +42,7 @@ public class PostController {
             @RequestParam(defaultValue = "3") int commentSize,
             @RequestParam(defaultValue = "createdAt") String commentSortBy
     ) {
+
         List<PostResponseDto> postResponseDtos = postService.getAllPosts(page, size, sortBy)
                 .stream()
                 .map(PostResponseDto -> {

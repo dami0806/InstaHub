@@ -17,5 +17,5 @@ public interface CommentService {
     void deleteComment(UUID commentId, String username);
 
     Page<CommentResponseDto> getCommentsByPostId(UUID post, int page, int size, String sortBy);
-     Comment getComment(UUID commentId);
+    Comment getComment(UUID commentId);
 }

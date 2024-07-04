@@ -53,7 +53,6 @@ public class PostServiceImpl implements PostService {
 
     }
 
-
     // 새 게시물 생성
     @Override
     @Transactional
