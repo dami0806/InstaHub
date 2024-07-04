@@ -34,7 +34,6 @@ public class PostServiceImpl implements PostService {
 
     // 모든 게시물 조회
     @Override
-    @Transactional(readOnly = true)
     public List<PostResponseDto> getAllPosts(int page, int size, String sortBy) {
         Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
@@ -58,7 +57,10 @@ public class PostServiceImpl implements PostService {
     // 새 게시물 생성
     @Override
     @Transactional
-    public PostResponseDto createPost(String title, String content, MultipartFile image, String username) {
+    public PostResponseDto createPost(String title,
+                                      String content,
+                                      MultipartFile image,
+                                      String username) {
         try {
             User user = getCurrentUser(username);
 

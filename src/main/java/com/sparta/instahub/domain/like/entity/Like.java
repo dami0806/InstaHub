@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "post_like")
 public class Like {
     // 고유 식별자
     @Id

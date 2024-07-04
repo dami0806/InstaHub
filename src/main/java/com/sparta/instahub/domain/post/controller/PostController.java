@@ -1,10 +1,13 @@
 package com.sparta.instahub.domain.post.controller;
 
+import com.sparta.instahub.domain.comment.dto.CommentResponseDto;
+import com.sparta.instahub.domain.comment.service.CommentService;
 import com.sparta.instahub.domain.post.dto.PostRequestDto;
 import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,25 +26,55 @@ import java.util.stream.Collectors;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
     /**
      * 모든 게시물 조회 요청 처리
+     *
      * @return
      */
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPosts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size,
-            @RequestParam(defaultValue = "createdAt") String sortBy
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "0") int commentPage,
+            @RequestParam(defaultValue = "3") int commentSize,
+            @RequestParam(defaultValue = "createdAt") String commentSortBy
     ) {
-        List<PostResponseDto> postResponseDtos = postService.getAllPosts(page, size, sortBy);
+        List<PostResponseDto> postResponseDtos = postService.getAllPosts(page, size, sortBy)
+                .stream()
+                .map(PostResponseDto -> {
+                    Page<CommentResponseDto> commentsPage = commentService.getCommentsByPostId(
+                            PostResponseDto.getId(),
+                            commentPage,
+                            commentSize,
+                            commentSortBy
+                    );
+
+                    PostResponseDto.updateComments(commentsPage.getContent());
+                    return PostResponseDto;
+                })
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok(postResponseDtos);
     }
 
     // ID로 게시물 조회 요청 처리
-    @GetMapping("/{id}")
-    public ResponseEntity<PostResponseDto> getPostById(@PathVariable UUID id) {
-        PostResponseDto postResponseDto = postService.getPostById(id);
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> getPostById(@PathVariable UUID postId,
+                                                       @RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "3") int size,
+                                                       @RequestParam(defaultValue = "createdAt") String sortBy,
+                                                       @RequestParam(defaultValue = "0") int commentPage,
+                                                       @RequestParam(defaultValue = "3") int commentSize,
+                                                       @RequestParam(defaultValue = "createdAt") String commentSortBy
+
+    ) {
+        PostResponseDto postResponseDto = postService.getPostById(postId);
+
+        Page<CommentResponseDto> commentsPage = commentService.getCommentsByPostId(postId, commentPage, commentSize, commentSortBy);
+        postResponseDto.updateComments(commentsPage.getContent());
         return ResponseEntity.ok(postResponseDto);
     }
 

@@ -48,6 +48,10 @@ public class PostResponseDto {
         this.updatedAt = updatedAt;
         this.comments = comments;
     }
+
+    public void updateComments(List<CommentResponseDto> content) {
+        this.comments = content;
+    }
 }
 
 

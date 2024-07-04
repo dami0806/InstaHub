@@ -13,6 +13,10 @@ import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.service.PostService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,6 +71,12 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(commentId);
     }
 
+    @Override
+    public Page<CommentResponseDto> getCommentsByPostId(UUID post, int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortBy));
+        Page<Comment> commentPage = commentRepository.findByPostId(post, pageable);
+        return commentPage.map(CommentResponseDto::commentResponseDto);
+    }
 
     // id로 댓글 불러오기
     private Comment getComment(UUID commentId) {
