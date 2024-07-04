@@ -14,6 +14,7 @@ public interface FollowService {
 
     void unfollowUser(UUID followerId, UUID followingId);
 
-    Page<UserResponseDto> getFollowing(UUID userId, Pageable pageable);
+    Page<UserResponseDto> getFollowings(UUID userId, Pageable pageable);
     Page<UserResponseDto> getFollowers(UUID userId, Pageable pageable);
+
 }

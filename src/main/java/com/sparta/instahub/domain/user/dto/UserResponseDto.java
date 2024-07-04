@@ -23,4 +23,13 @@ public class UserResponseDto {
         this.email = user.getEmail();
         this.username = user.getUsername();
     }
+
+    public User toEntity() {
+        return User.builder()
+                .id(this.id)
+                .userId(this.userId)
+                .email(this.email)
+                .username(this.username)
+                .build();
+    }
 }

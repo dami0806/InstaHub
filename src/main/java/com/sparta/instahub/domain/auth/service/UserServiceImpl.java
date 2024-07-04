@@ -247,6 +247,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username).orElseThrow(() ->
                 new UnauthorizedException("유저를 찾을수 없습니다."));
     }
+    @Override
     public User getUserByNameActive(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UnauthorizedException("유저를 찾을수 없습니다."));

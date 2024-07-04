@@ -46,5 +46,4 @@ public class Like {
         this.comment = comment;
         this.type = type;
     }
-
 }

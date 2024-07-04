@@ -50,7 +50,7 @@ public class FollowServiceImpl implements FollowService {
 
     // 팔로우 한 사람들 보기
     @Override
-    public Page<UserResponseDto> getFollowing(UUID userId, Pageable pageable) {
+    public Page<UserResponseDto> getFollowings(UUID userId, Pageable pageable) {
         User user = getCurrentUser(userId);
         List<UserResponseDto> followings = followRepository.findByFollowing(user).stream()
                 .map(follow -> new UserResponseDto(follow.getFollowing()))

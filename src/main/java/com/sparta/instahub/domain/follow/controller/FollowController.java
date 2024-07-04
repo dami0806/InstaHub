@@ -52,7 +52,7 @@ public class FollowController {
             @AuthenticationPrincipal UserDetails userDetails) {
         User follower = getCurrentUserId(userDetails);
         Pageable pageable = PageRequest.of(page, size);
-        Page<UserResponseDto> following = followService.getFollowing(follower.getId(),pageable);
+        Page<UserResponseDto> following = followService.getFollowings(follower.getId(),pageable);
         return ResponseEntity.ok(following);
     }
 

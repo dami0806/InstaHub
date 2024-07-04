@@ -48,4 +48,6 @@ public interface UserService {
     User unblockUser(UUID id);
 
     User getUserByName(String username);
+
+    User getUserByNameActive(String username);
 }

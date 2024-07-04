@@ -1,5 +1,7 @@
 package com.sparta.instahub.domain.post.controller;
 
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.auth.service.UserService;
 import com.sparta.instahub.domain.comment.dto.CommentResponseDto;
 import com.sparta.instahub.domain.comment.service.CommentService;
 import com.sparta.instahub.domain.post.dto.PostRequestDto;
@@ -8,6 +10,8 @@ import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,6 +31,7 @@ public class PostController {
 
     private final PostService postService;
     private final CommentService commentService;
+    private final UserService userService;
 
     /**
      * 모든 게시물 조회 요청 처리
@@ -111,5 +116,20 @@ public class PostController {
     public ResponseEntity<Void> deletePost(@PathVariable UUID id, @AuthenticationPrincipal UserDetails userDetails) {
         postService.deletePost(id, userDetails.getUsername()); // 게시물 삭제
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // 팔로우들의  전체 게시물 보기
+    @GetMapping("/followers")
+    public ResponseEntity<Page<PostResponseDto>> getFollowedPosts(@AuthenticationPrincipal UserDetails userDetails,
+                                                                  @RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "5") int size) {
+        User user = getCurrentUserId(userDetails);
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<PostResponseDto> posts = postService.getFollowerPosts(user.getId(), pageable);
+        return ResponseEntity.ok(posts);
+    }
+    private User getCurrentUserId(UserDetails userDetails) {
+        return userService.getUserByName(userDetails.getUsername());
     }
 }

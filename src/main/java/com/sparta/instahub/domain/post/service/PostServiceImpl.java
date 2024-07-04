@@ -3,17 +3,17 @@ package com.sparta.instahub.domain.post.service;
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.auth.entity.UserRole;
 import com.sparta.instahub.domain.auth.exception.UnauthorizedException;
+import com.sparta.instahub.domain.auth.service.UserService;
 import com.sparta.instahub.domain.auth.service.UserServiceImpl;
+import com.sparta.instahub.domain.follow.service.FollowService;
 import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.repository.PostRepository;
 import com.sparta.instahub.domain.post.exception.InaccessiblePostException;
+import com.sparta.instahub.domain.user.dto.UserResponseDto;
 import com.sparta.instahub.s3.service.S3Service;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +29,8 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final UserServiceImpl userService;
+    private final UserService userService;
+    private final FollowService followService;
     private final S3Service s3Service;
 
     // 모든 게시물 조회
@@ -103,6 +104,25 @@ public class PostServiceImpl implements PostService {
         } catch (InaccessiblePostException e) {
             throw new InaccessiblePostException("포스트를 수정할 수 없습니다.");
         }
+    }
+
+    @Override
+    public Page<PostResponseDto> getFollowerPosts(UUID userId, Pageable pageable) {
+        // 팔로잉하는 사용자 목록
+        List<User> followings = followService.getFollowings(userId, pageable).getContent().stream()
+                .map(UserResponseDto::toEntity)
+                .collect(Collectors.toList());
+
+        // 팔로잉하는 사용자의 게시물
+        Page<Post> posts = postRepository.findByUserIn(followings, pageable);
+
+        // Post 엔티티를 PostResponseDto로
+        List<PostResponseDto> postResponseDtos = posts.stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
+
+        // 페이지로
+        return new PageImpl<>(postResponseDtos, pageable, posts.getTotalElements());
     }
 
     // 게시물 삭제
