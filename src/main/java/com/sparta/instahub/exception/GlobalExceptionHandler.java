@@ -1,6 +1,7 @@
 package com.sparta.instahub.exception;
 
 import com.sparta.instahub.domain.auth.exception.UnauthorizedException;
+import com.sparta.instahub.domain.comment.exception.InaccessibleCommentException;
 import com.sparta.instahub.domain.post.exception.InaccessiblePostException;
 import com.sparta.instahub.s3.exception.InvalidImageException;
 import org.springframework.http.HttpStatus;
@@ -32,4 +33,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(ex.getMessage());
     }
 
+    @ExceptionHandler(InaccessibleCommentException.class)
+    public ResponseEntity<String> InaccessibleCommentExceptionHandler(InaccessibleCommentException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }

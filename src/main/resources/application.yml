@@ -45,5 +45,9 @@ cloud:
     stack:
       auto: true
 
+logging:
+  level:
+    org.springframework: DEBUG
+    com.sparta.instahub: DEBUG
 server:
   port: 8080

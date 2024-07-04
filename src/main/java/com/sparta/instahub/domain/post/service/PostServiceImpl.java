@@ -37,7 +37,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public List<PostResponseDto> getAllPosts(int page, int size, String sortBy) {
         Sort sort = Sort.by(Sort.Direction.DESC, sortBy);
-        Pageable pageable = PageRequest.of( page, size, sort);
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<Post> postsPage = postRepository.findAll(pageable);
         //List<Post> posts = postRepository.findAll();
         return postsPage.stream()
@@ -49,37 +49,28 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional(readOnly = true)
     public PostResponseDto getPostById(UUID id) {
-        Post post = postRepository.findById(id).orElseThrow(() ->
-                new InaccessiblePostException("post ID가 잘못된 ID입니다."));
+        Post post = getPost(id);
         return new PostResponseDto(post);
 
     }
 
-    @Override
-    public Post getPost(UUID id) {
-        return postRepository.findById(id).orElseThrow(() ->
-                new InaccessiblePostException("post ID가 잘못된 ID입니다."));
-    }
+
     // 새 게시물 생성
     @Override
     @Transactional
     public PostResponseDto createPost(String title, String content, MultipartFile image, String username) {
         try {
-            // 현재 로그인된 사용자 가져오기
-            User user = userService.getUserByNameActive(username);
+            User user = getCurrentUser(username);
 
-            String imageUrl = null;
-            if (image != null && !image.isEmpty()) {
-                imageUrl = s3Service.uploadFile(image);
-            }
+            String imageUrl = uploadImage(image);
+
             Post post = Post.builder()
                     .user(user)
                     .title(title)
                     .content(content)
                     .imageUrl(imageUrl)
                     .build();
-
-             postRepository.save(post); // Post 객체 저장
+            postRepository.save(post); // Post 객체 저장
             return new PostResponseDto(post);
 
         } catch (InaccessiblePostException e) {
@@ -93,22 +84,19 @@ public class PostServiceImpl implements PostService {
     public PostResponseDto updatePost(UUID id, String title, String content, MultipartFile image, String username) {
         try {
             // 현재 로그인된 사용자 가져오기
-            User currentUser = userService.getUserByName(username);
+            User currentUser = getCurrentUser(username);
             Post post = getPost(id); // ID로 게시물 조회
 
-            if (!post.getUser().equals(currentUser)) {
-                throw new UnauthorizedException("포스트 수정 권한이 없는 사용자 입니다.");
-            }
+            validateUserPermission(post, currentUser);
+
             if (image != null && !image.isEmpty()) {
-                if (post.getImageUrl() != null) {
-                    s3Service.deleteFile(post.getImageUrl());
-                }
+                deleteImage(post.getImageUrl());
                 String imageUrl = s3Service.uploadFile(image);
                 post.update(title, content, imageUrl);
             } else {
                 post.update(title, content, post.getImageUrl());
             }
-             postRepository.save(post);
+            postRepository.save(post);
             return new PostResponseDto(post);
 
         } catch (InaccessiblePostException e) {
@@ -123,13 +111,9 @@ public class PostServiceImpl implements PostService {
         User currentUser = userService.getUserByName(username);
         Post post = getPost(id); // ID로 게시물 조회
 
-        // 현재 로그인된 사용자가 게시글 작성자이거나 관리자인지 확인
-        if (!post.getUser().equals(currentUser) && currentUser.getUserRole() != UserRole.ADMIN) {
-            throw new UnauthorizedException("포스트 삭제 권한이 없는 사용자 입니다.");
-        }
-        if (post.getImageUrl() != null) {
-            s3Service.deleteFile(post.getImageUrl());
-        }
+        validateUserPermission(post, currentUser);
+
+       deleteImage(post.getImageUrl());
         postRepository.deleteById(id); // ID로 게시물 삭제
     }
 
@@ -138,11 +122,42 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void deleteAllPosts() {
         List<Post> posts = postRepository.findAll();
-        for (Post post : posts) {
-            if (post.getImageUrl() != null) {
-                s3Service.deleteFile(post.getImageUrl());
-            }
-        }
+        posts.forEach(post -> {
+            deleteImage(post.getImageUrl());
+        });
         postRepository.deleteAll();
+    }
+
+    // 이미지 저장하기
+    private String uploadImage(MultipartFile image) {
+        if (image != null && !image.isEmpty()) {
+            return s3Service.uploadFile(image);
+        }
+        return null;
+    }
+
+    // 이미지 삭제하기
+    private void deleteImage(String imageUrl) {
+        if (imageUrl != null) {
+            s3Service.deleteFile(imageUrl);
+        }
+    }
+
+    // id로 post 불러오기
+    public Post getPost(UUID id) {
+        return postRepository.findById(id).orElseThrow(() ->
+                new InaccessiblePostException("post ID가 잘못된 ID입니다."));
+    }
+
+    // / 현재 로그인된 사용자 가져오기
+    private User getCurrentUser(String username) {
+        return userService.getUserByNameActive(username);
+    }
+
+    // 권한이 있는지 확인
+    private void validateUserPermission(Post post, User currentUser) {
+        if (!post.getUser().equals(currentUser) && currentUser.getUserRole() != UserRole.ADMIN) {
+            throw new UnauthorizedException("해당 권한이 없는 사용자 입니다");
+        }
     }
 }

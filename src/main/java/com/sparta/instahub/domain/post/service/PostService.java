@@ -14,8 +14,6 @@ public interface PostService {
     List<PostResponseDto> getAllPosts(int page, int size, String sortBy);
 
     // ID로 게시물 조회
-    Post getPost(UUID id);
-
     PostResponseDto getPostById(UUID id);
 
     // 새 게시물 생성
@@ -29,4 +27,6 @@ public interface PostService {
 
     // 모든 게시물 삭제
     void deleteAllPosts();
+
+    Post getPost(UUID postId);
 }
