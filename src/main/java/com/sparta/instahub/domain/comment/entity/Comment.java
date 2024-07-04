@@ -4,11 +4,13 @@ import com.github.f4b6a3.ulid.UlidCreator;
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.comment.dto.CommentRequestDto;
 import com.sparta.instahub.common.entity.BaseEntity;
+import com.sparta.instahub.domain.like.entity.Like;
 import com.sparta.instahub.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -38,6 +40,10 @@ public class Comment extends BaseEntity {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes;
+
 
     @Builder
     public Comment(Post post, User user, String contents) {

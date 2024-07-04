@@ -5,11 +5,15 @@ import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.domain.post.entity.Post;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "post_like")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Like {
     // 고유 식별자
     @Id
@@ -29,9 +33,15 @@ public class Like {
     @JoinColumn(name = "comment_id", nullable = true)
     private Comment comment;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private LikeType type;
 
-
-
-
-
+    @Builder
+    public Like(User user, Post post, Comment comment, LikeType type) {
+        this.user = user;
+        this.post = post;
+        this.comment = comment;
+        this.type = type;
+    }
 }

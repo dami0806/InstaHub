@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class PostResponseDto {
     private final LocalDateTime createdAt; // 생성일시
     private final LocalDateTime updatedAt; // 수정일시
     private List<CommentResponseDto> comments;
+    private int likeCount;
 
     public PostResponseDto(final Post post) {
 
@@ -32,9 +34,9 @@ public class PostResponseDto {
         this.imageUrl = post.getImageUrl();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();
-        this.comments = post.getComments().stream()
-                .map(CommentResponseDto::new).
-                collect(Collectors.toList());
+        this.comments = post.getComments() != null ? post.getComments().stream().map(CommentResponseDto::new).collect(Collectors.toList()) : new ArrayList<>();
+        this.likeCount = post.getLikes().size();
+
     }
 
     @Builder

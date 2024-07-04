@@ -67,7 +67,11 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments; // 사용자가 작성한 댓글 목록
 
-
+//    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Follow> following;
+//
+//    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Follow> followers;
 
     public User(String name, String email, String password) {
         this.username = name;

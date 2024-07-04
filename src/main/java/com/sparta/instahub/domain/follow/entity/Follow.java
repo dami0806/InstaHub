@@ -5,7 +5,7 @@
 //import com.sparta.instahub.domain.auth.entity.User;
 //import jakarta.persistence.*;
 //import lombok.AccessLevel;
-//import lombok.Generated;
+//import lombok.Builder;
 //import lombok.NoArgsConstructor;
 //
 //import java.util.UUID;
@@ -27,4 +27,9 @@
 //    @JoinColumn(name = "follower_id")
 //    private User follwee;
 //
+//    @Builder
+//    public Follow(User follower, User follwee) {
+//        this.follower = follower;
+//        this.follwee = follwee;
+//    }
 //}

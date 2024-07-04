@@ -4,6 +4,7 @@ import com.github.f4b6a3.ulid.UlidCreator;
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.common.entity.BaseEntity;
+import com.sparta.instahub.domain.like.entity.Like;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +57,10 @@ public class Post extends BaseEntity {
 
     //Comment Service 내 post.getComments 관련 - 게시물 삭제될 경우 게시물 내 모든 댓글 삭제
     @OneToMany(mappedBy = "post", cascade =CascadeType.ALL, orphanRemoval = true)
-    public List<Comment> getComments;
+    public List<Comment> getComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes;
 
     // 빌더 패턴을 사용한 생성자
     @Builder

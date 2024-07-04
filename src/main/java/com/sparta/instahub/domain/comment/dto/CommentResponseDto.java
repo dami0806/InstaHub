@@ -14,6 +14,7 @@ public class CommentResponseDto {
     final private String username;
     final private  LocalDateTime createdAt; // 생성일시
     final private LocalDateTime updatedAt; // 수정일시
+    private int likeCount;
 
     public CommentResponseDto(Comment comment) {
         this.id = comment.getId();
@@ -21,21 +22,10 @@ public class CommentResponseDto {
         this.username = comment.getUser().getUsername();
         this.createdAt = comment.getCreatedAt();
         this.updatedAt = comment.getUpdatedAt();
+        this.likeCount = comment.getLikes().size();
     }
 
     public static CommentResponseDto commentResponseDto(Comment comment) {
         return new CommentResponseDto(comment);
-    }
-
-    public static CommentResponseDto from(UUID id, String contents, String username, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        return new CommentResponseDto(id, contents, username, createdAt, updatedAt);
-    }
-
-    private CommentResponseDto(UUID id, String contents, String username, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.contents = contents;
-        this.username = username;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 }

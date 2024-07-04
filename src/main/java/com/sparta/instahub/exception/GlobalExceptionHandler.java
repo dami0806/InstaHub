@@ -37,4 +37,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> InaccessibleCommentExceptionHandler(InaccessibleCommentException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> IllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
 }

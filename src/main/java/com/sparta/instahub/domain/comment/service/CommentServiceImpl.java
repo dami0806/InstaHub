@@ -79,7 +79,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     // id로 댓글 불러오기
-    private Comment getComment(UUID commentId) {
+    @Override
+    public Comment getComment(UUID commentId) {
         return commentRepository.findById(commentId).orElseThrow(() ->
                 new InaccessibleCommentException("comment ID가 잘못된 ID입니다."));
 
