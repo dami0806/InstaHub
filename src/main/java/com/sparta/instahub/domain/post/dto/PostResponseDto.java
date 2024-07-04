@@ -36,7 +36,6 @@ public class PostResponseDto {
         this.updatedAt = post.getUpdatedAt();
         this.comments = post.getComments() != null ? post.getComments().stream().map(CommentResponseDto::new).collect(Collectors.toList()) : new ArrayList<>();
         this.likeCount = post.getLikes().size();
-
     }
 
     @Builder

@@ -26,6 +26,7 @@ public class CommentResponseDto {
     }
 
     public static CommentResponseDto commentResponseDto(Comment comment) {
+
         return new CommentResponseDto(comment);
     }
 }

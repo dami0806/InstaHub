@@ -22,5 +22,4 @@ public interface LikeRepository extends JpaRepository<Like, UUID> {
 
     List<Like> findByUserAndPostIsNotNull(User user);
     List<Like> findByUserAndCommentIsNotNull(User user);
-
 }

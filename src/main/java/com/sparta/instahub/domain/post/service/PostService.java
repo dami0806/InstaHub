@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 // Post 엔티티에 대한 비즈니스 로직을 처리하는 서비스 클래스
-
 public interface PostService {
 
     List<PostResponseDto> getAllPosts(int page, int size, String sortBy);

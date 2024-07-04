@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.f4b6a3.ulid.UlidCreator;
 import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.common.entity.BaseEntity;
+import com.sparta.instahub.domain.follow.entity.Follow;
 import com.sparta.instahub.domain.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +19,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonIgnoreProperties({"posts", "comments", "profile"})
-//@Where(clause = "user_status = 'ACTIVE'")
 public class User extends BaseEntity {
 
     // 기본키
@@ -67,11 +67,11 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments; // 사용자가 작성한 댓글 목록
 
-//    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Follow> following;
-//
-//    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Follow> followers;
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> following;
+
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> followers;
 
     public User(String name, String email, String password) {
         this.username = name;

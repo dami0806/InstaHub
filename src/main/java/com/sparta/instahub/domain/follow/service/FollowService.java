@@ -1,0 +1,19 @@
+package com.sparta.instahub.domain.follow.service;
+
+import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.user.dto.UserResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface FollowService {
+
+    void followUser(UUID followerId, UUID followingId);
+
+    void unfollowUser(UUID followerId, UUID followingId);
+
+    Page<UserResponseDto> getFollowing(UUID userId, Pageable pageable);
+    Page<UserResponseDto> getFollowers(UUID userId, Pageable pageable);
+}

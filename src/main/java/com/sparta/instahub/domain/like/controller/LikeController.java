@@ -80,4 +80,5 @@ public class LikeController {
         Page<CommentResponseDto> likedComments = likeService.getLikedComments(user.getId(), pageable);
         return ResponseEntity.ok(likedComments);
     }
+
 }
