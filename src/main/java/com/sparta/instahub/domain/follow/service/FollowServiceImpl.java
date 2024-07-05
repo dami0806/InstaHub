@@ -57,24 +57,23 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public Page<UserResponseDto> getFollowings(UUID userId, Pageable pageable) {
         User user = getCurrentUser(userId);
-        List<UserResponseDto> followings = followRepository.findByFollowing(user).stream()
-                .map(follow -> new UserResponseDto(follow.getFollower()))
+        Page<User> followings = followRepository.findFollowings(user, pageable);
+        List<UserResponseDto> followingsDto = followings.stream()
+                .map(UserResponseDto::new)
                 .collect(Collectors.toList());
-        return new PageImpl<>(followings, pageable, followings.size());
-//        return followRepository.findByFollower(user).stream()
-//                .map(Follow::getFollowing)
-//                .collect(Collectors.toList());
+        return new PageImpl<>(followingsDto, pageable, followingsDto.size());
     }
 
-    // 나를 파로우한 사람들 보기
+    // 나를 팔로우한 팔로워 보기
     @Override
     public Page<UserResponseDto> getFollowers(UUID userId, Pageable pageable) {
         User user = userService.getUserById(userId);
-        List<UserResponseDto> followers = followRepository.findByFollower(user).stream()
-                .map(follow -> new UserResponseDto(follow.getFollowing()))
 
+        Page<User> followers = followRepository.findFollowers(user, pageable);
+        List<UserResponseDto> followersDto = followers.stream()
+                .map(UserResponseDto::new)
                 .collect(Collectors.toList());
-        return new PageImpl<>(followers, pageable, followers.size());
+        return new PageImpl<>(followersDto, pageable, followersDto.size());
     }
 
     @Override
