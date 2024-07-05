@@ -67,6 +67,11 @@ public class FollowController {
         return ResponseEntity.ok(followers);
     }
 
+    @GetMapping("/top10")
+    public ResponseEntity<List<UserResponseDto>> getTop10UserByFollowersCount() {
+        List<UserResponseDto> top10User = followService.getTop10UserByFollowersCount();
+        return ResponseEntity.ok(top10User);
+    }
     private User getCurrentUserId(UserDetails userDetails) {
         return userService.getUserByName(userDetails.getUsername());
     }

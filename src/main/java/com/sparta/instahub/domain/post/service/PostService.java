@@ -2,6 +2,7 @@ package com.sparta.instahub.domain.post.service;
 
 import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
+import com.sparta.instahub.domain.post.entity.SearchCond;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +24,7 @@ public interface PostService {
     PostResponseDto updatePost(UUID id, String title, String content, MultipartFile imageUrl, String username);
 
     // 팔로우 한 사용자의 게시물들을 조회하는 메서드
-    Page<PostResponseDto> getFollowerPosts(UUID userId, Pageable pageable);
+    Page<PostResponseDto> getFollowerPosts(UUID userId, SearchCond searchCond,Pageable pageable);
     // 게시물 삭제
     void deletePost(UUID id, String username);
 

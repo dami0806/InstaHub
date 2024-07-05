@@ -8,6 +8,7 @@ import com.sparta.instahub.domain.auth.service.UserServiceImpl;
 import com.sparta.instahub.domain.follow.service.FollowService;
 import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
+import com.sparta.instahub.domain.post.entity.SearchCond;
 import com.sparta.instahub.domain.post.repository.PostRepository;
 import com.sparta.instahub.domain.post.exception.InaccessiblePostException;
 import com.sparta.instahub.domain.user.dto.UserResponseDto;
@@ -107,14 +108,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponseDto> getFollowerPosts(UUID userId, Pageable pageable) {
+    public Page<PostResponseDto> getFollowerPosts(UUID userId, SearchCond searchCond, Pageable pageable) {
         // 팔로잉하는 사용자 목록
         List<User> followings = followService.getFollowings(userId, pageable).getContent().stream()
                 .map(UserResponseDto::toEntity)
                 .collect(Collectors.toList());
 
         // 팔로잉하는 사용자의 게시물
-        Page<Post> posts = postRepository.findByUserIn(followings, pageable);
+        Page<Post> posts;
+        String username = searchCond.getUsername();
+        if (username != null && !username.isEmpty()) {
+            posts = postRepository.findByUserInAndUserUsernameContainingIgnoreCase(
+                    followings,
+                    searchCond.getUsername(),
+                    pageable);
+        } else {
+            posts = postRepository.findByUserIn(followings, pageable);
+        }
+        postRepository.findByUserIn(followings, pageable);
 
         // Post 엔티티를 PostResponseDto로
         List<PostResponseDto> postResponseDtos = posts.stream()
@@ -134,7 +145,7 @@ public class PostServiceImpl implements PostService {
 
         validateUserPermission(post, currentUser);
 
-       deleteImage(post.getImageUrl());
+        deleteImage(post.getImageUrl());
         postRepository.deleteById(id); // ID로 게시물 삭제
     }
 

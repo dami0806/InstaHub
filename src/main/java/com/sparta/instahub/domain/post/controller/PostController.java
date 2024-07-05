@@ -7,6 +7,7 @@ import com.sparta.instahub.domain.comment.service.CommentService;
 import com.sparta.instahub.domain.post.dto.PostRequestDto;
 import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
+import com.sparta.instahub.domain.post.entity.SearchCond;
 import com.sparta.instahub.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -113,7 +114,8 @@ public class PostController {
 
     // 게시물 삭제 요청 처리
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable UUID id, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<Void> deletePost(@PathVariable UUID id,
+                                           @AuthenticationPrincipal UserDetails userDetails) {
         postService.deletePost(id, userDetails.getUsername()); // 게시물 삭제
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -122,13 +124,19 @@ public class PostController {
     @GetMapping("/followers")
     public ResponseEntity<Page<PostResponseDto>> getFollowedPosts(@AuthenticationPrincipal UserDetails userDetails,
                                                                   @RequestParam(defaultValue = "0") int page,
-                                                                  @RequestParam(defaultValue = "5") int size) {
+                                                                  @RequestParam(defaultValue = "5") int size,
+                                                                  @RequestParam(required = false) String username) {
         User user = getCurrentUserId(userDetails);
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<PostResponseDto> posts = postService.getFollowerPosts(user.getId(), pageable);
+        SearchCond searchCond = new SearchCond();
+        searchCond.setUsername(username);
+
+        Page<PostResponseDto> posts = postService.getFollowerPosts(user.getId(), searchCond, pageable);
         return ResponseEntity.ok(posts);
     }
+
+
     private User getCurrentUserId(UserDetails userDetails) {
         return userService.getUserByName(userDetails.getUsername());
     }

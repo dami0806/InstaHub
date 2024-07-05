@@ -32,4 +32,8 @@ public class UserResponseDto {
                 .username(this.username)
                 .build();
     }
+
+    public void updateFollowerCount(Long followerCount) {
+        this.username = this.username + " (" + followerCount + ")";
+    }
 }

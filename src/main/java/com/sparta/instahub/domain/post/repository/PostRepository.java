@@ -11,4 +11,6 @@ import java.util.UUID;
 
 public interface PostRepository extends JpaRepository<Post, UUID> {
     Page<Post> findByUserIn(List<User> users, Pageable pageable);
+
+    Page<Post> findByUserInAndUserUsernameContainingIgnoreCase(List<User> users, String username, Pageable pageable);
 }
