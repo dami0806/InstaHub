@@ -107,33 +107,11 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    // 팔로잉 하는 사용자 게시물 보기
     @Override
     public Page<PostResponseDto> getFollowerPosts(UUID userId, SearchCond searchCond, Pageable pageable) {
-        // 팔로잉하는 사용자 목록
-        List<User> followings = followService.getFollowings(userId, pageable).getContent().stream()
-                .map(UserResponseDto::toEntity)
-                .collect(Collectors.toList());
-
-        // 팔로잉하는 사용자의 게시물
-        Page<Post> posts;
-        String username = searchCond.getUsername();
-        if (username != null && !username.isEmpty()) {
-            posts = postRepository.findByUserInAndUserUsernameContainingIgnoreCase(
-                    followings,
-                    searchCond.getUsername(),
-                    pageable);
-        } else {
-            posts = postRepository.findByUserIn(followings, pageable);
-        }
-        postRepository.findByUserIn(followings, pageable);
-
-        // Post 엔티티를 PostResponseDto로
-        List<PostResponseDto> postResponseDtos = posts.stream()
-                .map(PostResponseDto::new)
-                .collect(Collectors.toList());
-
-        // 페이지로
-        return new PageImpl<>(postResponseDtos, pageable, posts.getTotalElements());
+        Page<Post> posts = postRepository.findAllBySearchCond(searchCond, pageable);
+        return posts.map(PostResponseDto::new);
     }
 
     // 게시물 삭제

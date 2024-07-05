@@ -76,26 +76,6 @@ public class FollowServiceImpl implements FollowService {
         return new PageImpl<>(followersDto, pageable, followersDto.size());
     }
 
-    @Override
-    public Page<PostResponseDto> getFollowerPosts(UUID userId, SearchCond searchCond, Pageable pageable) {
-        User user = userService.getUserById(userId);
-        List<User> followings = followRepository.findByFollower(user).stream()
-                .map(Follow::getFollowing)
-                .collect(Collectors.toList());
-
-        Page<Post> posts;
-        if (searchCond.getUsername() != null && !searchCond.getUsername().isEmpty()) {
-            posts = postRepository.findByUserInAndUserUsernameContainingIgnoreCase(followings, searchCond.getUsername(), pageable);
-        } else {
-            posts = postRepository.findByUserIn(followings, pageable);
-        }
-
-        List<PostResponseDto> postResponseDtos = posts.stream()
-                .map(PostResponseDto::new)
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(postResponseDtos, pageable, posts.getTotalElements());
-    }
 
     // QueryDSL을 사용하여 팔로워 수 상위 10명의 사용자 가져오기
     @Override

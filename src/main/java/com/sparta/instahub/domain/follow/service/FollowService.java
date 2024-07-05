@@ -19,9 +19,5 @@ public interface FollowService {
     Page<UserResponseDto> getFollowings(UUID userId, Pageable pageable);
     Page<UserResponseDto> getFollowers(UUID userId, Pageable pageable);
 
-    // 필터링한 팔로워 게시물
-    Page<PostResponseDto> getFollowerPosts(UUID userId, SearchCond searchCond, Pageable pageable);
-
-
     List<UserResponseDto> getTop10UserByFollowersCount();
 }
