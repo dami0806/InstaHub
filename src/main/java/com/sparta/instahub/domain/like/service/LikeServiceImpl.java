@@ -87,20 +87,15 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable) {
         User user = getCurrentUser(userId);
-
-        List<Like> likes = likeRepository.findByUserAndPostIsNotNull(user);
-        List<Post> likedPosts = likes.stream().map(Like::getPost).collect(Collectors.toList());
-        List<PostResponseDto> postResponseDtos = likedPosts.stream().map(PostResponseDto::new).collect(Collectors.toList());
-        return new PageImpl<>(postResponseDtos, pageable, postResponseDtos.size());
+        Page<Post> likedPosts = likeRepository.findLikedPosts(user, pageable);
+        return likedPosts.map(PostResponseDto::new);
     }
 
     @Override
     public Page<CommentResponseDto> getLikedComments(UUID userId, Pageable pageable) {
         User user = getCurrentUser(userId);
-        List<Like> likes = likeRepository.findByUserAndCommentIsNotNull(user);
-        List<Comment> likedComments = likes.stream().map(Like::getComment).collect(Collectors.toList());
-        List<CommentResponseDto> commentResponseDtos = likedComments.stream().map(CommentResponseDto::new).collect(Collectors.toList());
-        return new PageImpl<>(commentResponseDtos, pageable, commentResponseDtos.size());
+        Page<Comment> likedComments = likeRepository.findLikedComments(user, pageable);
+        return likedComments.map(CommentResponseDto::new);
     }
 
 

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface LikeRepository extends JpaRepository<Like, UUID> {
+public interface LikeRepository extends JpaRepository<Like, UUID>, LikeRepositoryCustom {
 
     Optional<Like> findByUserAndPost(User user, Post post);
 
