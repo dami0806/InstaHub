@@ -98,21 +98,14 @@ public class FollowServiceImpl implements FollowService {
         return new PageImpl<>(postResponseDtos, pageable, posts.getTotalElements());
     }
 
-
+    // QueryDSL을 사용하여 팔로워 수 상위 10명의 사용자 가져오기
     @Override
     public List<UserResponseDto> getTop10UserByFollowersCount() {
-        List<Object[]> results = followRepository.findTop10ByFollowerCount();
-
-        return results.stream()
-                .map(result -> {
-                    User user = (User) result[0];
-                    Long followerCount = (Long) result[1];
-                    UserResponseDto userResponseDto = new UserResponseDto(user);
-                    userResponseDto.updateFollowerCount(followerCount);
-                    return userResponseDto;
-                }).collect(Collectors.toList());
+        List<User> top10Users = followRepository.findTop10ByFollowerCount();
+        return top10Users.stream().map(UserResponseDto::new).collect(Collectors.toList());
     }
 
+    // 팔로워들의 게시물 조회
     private void validateFollowAction(User follower, User following) {
         if (follower.equals(following)) {
             throw new IllegalArgumentException("스스로를 팔로우할수는 없습니다.");
@@ -122,8 +115,8 @@ public class FollowServiceImpl implements FollowService {
             throw new IllegalArgumentException("이미 팔로우 중입니다.");
         }
     }
+
     private User getCurrentUser(UUID userId) {
         return userService.getUserById(userId);
     }
-
 }
