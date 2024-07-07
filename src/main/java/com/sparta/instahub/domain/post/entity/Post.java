@@ -11,7 +11,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class Post extends BaseEntity {
     private String imageUrl;
 
     //게시물에 달린 댓글 목록
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private List<Comment> comments;
 
     @Column(nullable = false, updatable = false)
@@ -56,10 +55,10 @@ public class Post extends BaseEntity {
     private LocalDateTime updatedAt; // 수정일시
 
     //Comment Service 내 post.getComments 관련 - 게시물 삭제될 경우 게시물 내 모든 댓글 삭제
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public List<Comment> getComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Like> likes = new ArrayList<>();
 
     // 빌더 패턴을 사용한 생성자

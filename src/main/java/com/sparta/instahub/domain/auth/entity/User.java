@@ -46,7 +46,6 @@ public class User extends BaseEntity {
     // 사용자 상태
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-
     private UserStatus userStatus;
 
     // 사용자 역할
@@ -60,17 +59,17 @@ public class User extends BaseEntity {
     private String refreshToken;
 
     // User와 Post는 일대다 관계
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Post> posts; // 사용자가 작성한 게시물 목록
 
     // User와 Comment는 일대다 관계
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments; // 사용자가 작성한 댓글 목록
 
-    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Follow> following;
 
-    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "following", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Follow> followers;
 
     public User(String name, String email, String password) {
