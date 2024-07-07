@@ -118,7 +118,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void deletePost(UUID id, String username) {
-        User currentUser = userService.getUserByName(username);
+        User currentUser = getCurrentUser(username);
         Post post = getPost(id); // ID로 게시물 조회
 
         validateUserPermission(post, currentUser);

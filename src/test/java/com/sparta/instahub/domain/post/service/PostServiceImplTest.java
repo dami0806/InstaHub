@@ -75,7 +75,7 @@ class PostServiceImplTest {
                 .imageUrl("image.jpg")
                 .user(user)
                 .build();
-
+        postId = post.getId();
 
         image = new MockMultipartFile(
                 "image", // MultipartFile의 이름
@@ -237,13 +237,14 @@ class PostServiceImplTest {
         when(postRepository.findById(postId)).thenReturn(Optional.of(post));
 
         // 실행 (when):
-        postService.deletePost(postId, user.getUsername());
+        postService.deletePost(postId, "Test User");
 
         // 검증 (then):
         verify(userService, times(1)).getUserByNameActive("Test User");
         verify(postRepository, times(1)).findById(postId);
         verify(postRepository, times(1)).deleteById(postId);
     }
+
 
     @Test
     @DisplayName("게시물 삭제 실패 - 작성자가 아님")
