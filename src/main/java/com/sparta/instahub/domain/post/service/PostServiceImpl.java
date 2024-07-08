@@ -6,8 +6,10 @@ import com.sparta.instahub.domain.auth.exception.UnauthorizedException;
 import com.sparta.instahub.domain.auth.service.UserService;
 import com.sparta.instahub.domain.auth.service.UserServiceImpl;
 import com.sparta.instahub.domain.follow.service.FollowService;
+import com.sparta.instahub.domain.like.entity.QLike;
 import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
+import com.sparta.instahub.domain.post.entity.QPost;
 import com.sparta.instahub.domain.post.entity.SearchCond;
 import com.sparta.instahub.domain.post.repository.PostRepository;
 import com.sparta.instahub.domain.post.exception.InaccessiblePostException;
@@ -31,7 +33,6 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserService userService;
-    private final FollowService followService;
     private final S3Service s3Service;
 
     // 모든 게시물 조회
@@ -115,6 +116,13 @@ public class PostServiceImpl implements PostService {
     public Page<PostResponseDto> getFollowerPosts(UUID userId, SearchCond searchCond, Pageable pageable) {
         Page<Post> posts = postRepository.findAllBySearchCond(searchCond, pageable);
         return posts.map(post -> new PostResponseDto(post, countLikesByPostId(post.getId())));
+    }
+
+    // 좋아요 하는 사용자 게시물 보기
+    @Override
+    public Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable) {
+        Page<Post> likedPosts = postRepository.findLikedPostsByUser(userId, pageable);
+        return likedPosts.map(post -> new PostResponseDto(post, countLikesByPostId(post.getId())));
     }
 
     // 게시물 삭제

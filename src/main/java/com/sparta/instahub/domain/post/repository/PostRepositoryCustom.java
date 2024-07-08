@@ -15,4 +15,5 @@ import java.util.UUID;
 public interface PostRepositoryCustom {
     Page<Post> findAllBySearchCond(SearchCond searchCond, Pageable pageable);
     long countLikesByPostId(UUID postId);
+    Page<Post> findLikedPostsByUser(UUID userId, Pageable pageable);
 }

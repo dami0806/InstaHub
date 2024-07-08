@@ -1,5 +1,6 @@
 package com.sparta.instahub.domain.post.controller;
 
+import com.amazonaws.Response;
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.auth.service.UserService;
 import com.sparta.instahub.domain.comment.dto.CommentResponseDto;
@@ -136,6 +137,17 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    // 좋아요한 게시글 보기
+    @GetMapping("/likeposts")
+    public ResponseEntity<Page<PostResponseDto>> getLikedPosts(@RequestParam(defaultValue = "0") int page,
+                                                               @RequestParam(defaultValue = "5") int size,
+                                                               @AuthenticationPrincipal UserDetails userDetails) {
+        User user = getCurrentUserId(userDetails);
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<PostResponseDto> likedPosts = postService.getLikedPosts(user.getId(), pageable);
+        return ResponseEntity.ok(likedPosts);
+    }
 
     private User getCurrentUserId(UserDetails userDetails) {
         return userService.getUserByName(userDetails.getUsername());

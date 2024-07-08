@@ -32,4 +32,6 @@ public interface PostService {
     void deleteAllPosts();
 
     Post getPost(UUID postId);
+
+    Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable);
 }

@@ -12,17 +12,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 
 public class PostRepositoryImpl implements PostRepositoryCustom {
     private final JPAQueryFactory queryFactory;
+
+
 
     @Override
     public Page<Post> findAllBySearchCond(SearchCond searchCond, Pageable pageable) {
@@ -52,5 +51,24 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         return queryFactory.selectFrom(like)
                 .where(like.post.id.eq(postId))
                 .fetchCount();
+    }
+
+    @Override
+    public Page<Post> findLikedPostsByUser(UUID userId, Pageable pageable) {
+        QPost post = QPost.post;
+        QLike like = QLike.like;
+
+        List<Post> likedPosts = queryFactory.selectFrom(post)
+                .join(like).on(like.post.eq(post))
+                .where(like.user.id.eq(userId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory.selectFrom(like)
+                .where(like.user.id.eq(userId))
+                .fetchCount();
+
+        return new PageImpl<>(likedPosts, pageable, total);
     }
 }
