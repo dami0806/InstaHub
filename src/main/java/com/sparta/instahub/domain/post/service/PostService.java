@@ -33,5 +33,7 @@ public interface PostService {
 
     Post getPost(UUID postId);
 
+    long countLikesByPostId(UUID postId);
+
     Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable);
 }

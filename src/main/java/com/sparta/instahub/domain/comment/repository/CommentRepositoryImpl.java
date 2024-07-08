@@ -38,7 +38,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
         QLike like = QLike.like;
 
         List<Comment> likedComments = queryFactory.selectFrom(comment)
-                .join(like).on(like.comment.eq(comment))
+                .join(like).on(like.commentId.eq(comment.id))
                 .where(like.user.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

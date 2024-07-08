@@ -14,9 +14,18 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class LikeRepositoryImpl implements LikeRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    @Override
+    public long countByPostId(UUID postId) {
+        QLike like = QLike.like;
+        return queryFactory
+                .selectFrom(like)
+                .where(like.postId.eq(postId))
+                .fetchCount();
+    }
 }

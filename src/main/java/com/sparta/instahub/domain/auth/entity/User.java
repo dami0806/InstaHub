@@ -25,6 +25,7 @@ public class User extends BaseEntity {
     @Id
     @Column(columnDefinition = "BINARY(16)")
     @GeneratedValue(generator = "uuid2")
+    @Builder.Default
     private UUID id = UlidCreator.getMonotonicUlid().toUuid();
 
     // 사용자 ID

@@ -51,7 +51,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     public long countLikesByPostId(UUID postId) {
         QLike like = QLike.like;
         return queryFactory.selectFrom(like)
-                .where(like.post.id.eq(postId))
+                .where(like.postId.eq(postId))
                 .fetchCount();
     }
 
@@ -61,7 +61,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         QLike like = QLike.like;
 
         List<Post> likedPosts = queryFactory.selectFrom(post)
-                .join(like).on(like.post.eq(post))
+                .join(like).on(like.postId.eq(post.id))
                 .where(like.user.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

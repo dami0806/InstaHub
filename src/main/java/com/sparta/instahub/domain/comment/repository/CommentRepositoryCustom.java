@@ -8,5 +8,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.UUID;
 
 public interface CommentRepositoryCustom {
+    Page<Comment> findAllByPostId(UUID postId, Pageable pageable);
     Page<Comment> findLikedCommentsByUser(UUID userId, Pageable pageable);
 }

@@ -12,12 +12,12 @@ import java.util.UUID;
 
 public interface LikeRepository extends JpaRepository<Like, UUID>, LikeRepositoryCustom {
 
-    Optional<Like> findByUserAndPost(User user, Post post);
+    Optional<Like> findByUserAndPostId(User user, UUID post);
 
-    Optional<Like> findByUserAndComment(User user, Comment comment);
+    Optional<Like> findByUserAndCommentId(User user, UUID comment);
 
-    boolean existsByUserAndPost(User user, Post post);
+    boolean existsByUserAndPostId(User user, UUID post);
 
-    boolean existsByUserAndComment(User user, Comment comment);
+    boolean existsByUserAndCommentId(User user, UUID comment);
 
 }

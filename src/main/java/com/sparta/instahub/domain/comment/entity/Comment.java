@@ -41,9 +41,6 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Like> likes;
-
 
     @Builder
     public Comment(Post post, User user, String contents) {
@@ -56,5 +53,4 @@ public class Comment extends BaseEntity {
         this.contents = contents;
         this.updatedAt = LocalDateTime.now();
     }
-
 }

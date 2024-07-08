@@ -7,6 +7,7 @@ import com.sparta.instahub.domain.auth.service.UserService;
 import com.sparta.instahub.domain.auth.service.UserServiceImpl;
 import com.sparta.instahub.domain.follow.service.FollowService;
 import com.sparta.instahub.domain.like.entity.QLike;
+import com.sparta.instahub.domain.like.service.LikeService;
 import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.entity.QPost;
@@ -33,6 +34,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserService userService;
+    private final LikeService likeService;
     private final S3Service s3Service;
 
     // 모든 게시물 조회
@@ -55,6 +57,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public PostResponseDto getPostById(UUID id) {
         Post post = getPost(id);
+        long likeCount = likeService.countLikesByPostId(id);
         return new PostResponseDto(post,countLikesByPostId(id));
 
     }
@@ -182,7 +185,8 @@ public class PostServiceImpl implements PostService {
             throw new UnauthorizedException("해당 권한이 없는 사용자 입니다");
         }
     }
-    private long countLikesByPostId(UUID postId) {
+    @Override
+    public long countLikesByPostId(UUID postId) {
         return postRepository.countLikesByPostId(postId);
     }
 }

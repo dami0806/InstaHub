@@ -27,23 +27,22 @@ public class Like {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id", nullable = true)
-    private Post post;
 
-    @ManyToOne
-    @JoinColumn(name = "comment_id", nullable = true)
-    private Comment comment;
+    @Column(name = "post_id", columnDefinition = "BINARY(16)", nullable = true)
+    private UUID postId;
+
+    @Column(name = "comment_id", columnDefinition = "BINARY(16)", nullable = true)
+    private UUID commentId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LikeType type;
 
     @Builder
-    public Like(User user, Post post, Comment comment, LikeType type) {
+    public Like(User user, UUID post, UUID comment, LikeType type) {
         this.user = user;
-        this.post = post;
-        this.comment = comment;
+        this.postId = post;
+        this.commentId = comment;
         this.type = type;
     }
 }

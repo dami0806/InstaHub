@@ -18,4 +18,6 @@ public interface LikeService {
     void likeComment(UUID userId, UUID commentId);
     void unlikeComment(UUID userId, UUID commentId);
 
+    long countLikesByPostId(UUID postId);
+
 }
