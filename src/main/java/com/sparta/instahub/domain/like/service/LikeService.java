@@ -18,8 +18,4 @@ public interface LikeService {
     void likeComment(UUID userId, UUID commentId);
     void unlikeComment(UUID userId, UUID commentId);
 
-  //  Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable);
-
-    Page<CommentResponseDto> getLikedComments(UUID userId, Pageable pageable);
-
 }

@@ -125,6 +125,7 @@ public class PostServiceImpl implements PostService {
         return likedPosts.map(post -> new PostResponseDto(post, countLikesByPostId(post.getId())));
     }
 
+
     // 게시물 삭제
     @Override
     @Transactional

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table(name = "post_like")
+@Table(name = "likes")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Like {

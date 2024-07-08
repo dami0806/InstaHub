@@ -58,18 +58,4 @@ public class LikeController {
         likeService.unlikeComment(user.getId(), commentId);
         return ResponseEntity.ok().build();
     }
-
-
-
-    // 좋아요한 댓글 모두 보기
-    @GetMapping("/comments/{commentId}")
-    public ResponseEntity<Page<CommentResponseDto>> getLikedComments(@RequestParam(defaultValue = "0") int page,
-                                                                  @RequestParam(defaultValue = "5") int size,
-                                                                  @AuthenticationPrincipal UserDetails userDetails) {
-        User user = userService.getUserByName(userDetails.getUsername());
-        Pageable pageable = PageRequest.of(page, size);
-        Page<CommentResponseDto> likedComments = likeService.getLikedComments(user.getId(), pageable);
-        return ResponseEntity.ok(likedComments);
-    }
-
 }

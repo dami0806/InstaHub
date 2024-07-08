@@ -4,6 +4,8 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sparta.instahub.domain.auth.entity.QUser;
 import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.comment.entity.Comment;
+import com.sparta.instahub.domain.comment.entity.QComment;
 import com.sparta.instahub.domain.like.entity.QLike;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.entity.QPost;

@@ -20,6 +20,4 @@ public interface LikeRepository extends JpaRepository<Like, UUID>, LikeRepositor
 
     boolean existsByUserAndComment(User user, Comment comment);
 
-    List<Like> findByUserAndPostIsNotNull(User user);
-    List<Like> findByUserAndCommentIsNotNull(User user);
 }

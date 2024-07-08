@@ -84,21 +84,6 @@ public class LikeServiceImpl implements LikeService {
         likeRepository.delete(like);
     }
 
-//    @Override
-//    public Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable) {
-//        User user = getCurrentUser(userId);
-//        Page<Post> likedPosts = likeRepository.findLikedPosts(user, pageable);
-//        return likedPosts.map(PostResponseDto::new);
-//    }
-
-    @Override
-    public Page<CommentResponseDto> getLikedComments(UUID userId, Pageable pageable) {
-        User user = getCurrentUser(userId);
-        Page<Comment> likedComments = likeRepository.findLikedComments(user, pageable);
-        return likedComments.map(CommentResponseDto::new);
-    }
-
-
     private void validateLike(User user, Post post, Comment comment) {
         if (post != null && likeRepository.existsByUserAndPost(user, post)) {
             throw new IllegalArgumentException("이미 이 포스트에 좋아요를 눌렀습니다.");

@@ -9,17 +9,19 @@ import com.sparta.instahub.domain.comment.dto.CommentResponseDto;
 import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.domain.comment.exception.InaccessibleCommentException;
 import com.sparta.instahub.domain.comment.repository.CommentRepository;
+import com.sparta.instahub.domain.like.entity.Like;
+import com.sparta.instahub.domain.like.entity.LikeType;
+import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.service.PostService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +59,13 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(comment);
 
         return CommentResponseDto.commentResponseDto(comment);
+    }
+
+    // 사용자 좋아요한 댓글 보기
+    @Override
+    public Page<CommentResponseDto> getLikedComments(UUID userId, Pageable pageable) {
+        Page<Comment> likedComments = commentRepository.findLikedCommentsByUser(userId, pageable);
+        return likedComments.map(CommentResponseDto::commentResponseDto);
     }
 
     // 댓글 삭제

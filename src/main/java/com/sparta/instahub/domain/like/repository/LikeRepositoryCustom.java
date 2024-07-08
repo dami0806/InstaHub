@@ -7,6 +7,4 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface LikeRepositoryCustom {
-    Page<Post> findLikedPosts(User user, Pageable pageable);
-    Page<Comment> findLikedComments(User user, Pageable pageable);
 }

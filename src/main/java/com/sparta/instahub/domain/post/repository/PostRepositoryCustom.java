@@ -2,6 +2,7 @@ package com.sparta.instahub.domain.post.repository;
 
 
 import com.sparta.instahub.domain.auth.entity.User;
+import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.entity.SearchCond;
 import org.springframework.data.domain.Page;
@@ -16,4 +17,5 @@ public interface PostRepositoryCustom {
     Page<Post> findAllBySearchCond(SearchCond searchCond, Pageable pageable);
     long countLikesByPostId(UUID postId);
     Page<Post> findLikedPostsByUser(UUID userId, Pageable pageable);
-}
+
+    }

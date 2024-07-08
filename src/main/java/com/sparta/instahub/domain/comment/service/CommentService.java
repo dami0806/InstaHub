@@ -18,4 +18,5 @@ public interface CommentService {
 
     Page<CommentResponseDto> getCommentsByPostId(UUID post, int page, int size, String sortBy);
     Comment getComment(UUID commentId);
+    Page<CommentResponseDto> getLikedComments(UUID userId, Pageable pageable);
 }
