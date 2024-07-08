@@ -42,7 +42,10 @@ public class PostServiceImpl implements PostService {
         Page<Post> postsPage = postRepository.findAll(pageable);
         //List<Post> posts = postRepository.findAll();
         return postsPage.stream()
-                .map(PostResponseDto::new)
+                .map(post -> {
+                    long likeCount = countLikesByPostId(post.getId());
+                    return new PostResponseDto(post, likeCount);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -51,7 +54,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public PostResponseDto getPostById(UUID id) {
         Post post = getPost(id);
-        return new PostResponseDto(post);
+        return new PostResponseDto(post,countLikesByPostId(id));
 
     }
 
@@ -74,7 +77,7 @@ public class PostServiceImpl implements PostService {
                     .imageUrl(imageUrl)
                     .build();
             postRepository.save(post); // Post 객체 저장
-            return new PostResponseDto(post);
+            return new PostResponseDto(post,countLikesByPostId(post.getId()));
 
         } catch (InaccessiblePostException e) {
             throw new InaccessiblePostException("포스트를 생성할 수 없습니다.");
@@ -100,7 +103,7 @@ public class PostServiceImpl implements PostService {
                 post.update(title, content, post.getImageUrl());
             }
             postRepository.save(post);
-            return new PostResponseDto(post);
+            return new PostResponseDto(post,countLikesByPostId(post.getId()));
 
         } catch (InaccessiblePostException e) {
             throw new InaccessiblePostException("포스트를 수정할 수 없습니다.");
@@ -111,7 +114,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<PostResponseDto> getFollowerPosts(UUID userId, SearchCond searchCond, Pageable pageable) {
         Page<Post> posts = postRepository.findAllBySearchCond(searchCond, pageable);
-        return posts.map(PostResponseDto::new);
+        return posts.map(post -> new PostResponseDto(post, countLikesByPostId(post.getId())));
     }
 
     // 게시물 삭제
@@ -169,5 +172,8 @@ public class PostServiceImpl implements PostService {
         if (!post.getUser().equals(currentUser) && currentUser.getUserRole() != UserRole.ADMIN) {
             throw new UnauthorizedException("해당 권한이 없는 사용자 입니다");
         }
+    }
+    private long countLikesByPostId(UUID postId) {
+        return postRepository.countLikesByPostId(postId);
     }
 }

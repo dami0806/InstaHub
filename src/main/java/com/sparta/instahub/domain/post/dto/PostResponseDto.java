@@ -23,9 +23,9 @@ public class PostResponseDto {
     private final LocalDateTime createdAt; // 생성일시
     private final LocalDateTime updatedAt; // 수정일시
     private List<CommentResponseDto> comments;
-    private int likeCount;
+    private long likeCount;
 
-    public PostResponseDto(final Post post) {
+    public PostResponseDto(final Post post,long likeCount) {
 
         this.id = post.getId();
         this.title = post.getTitle();
@@ -35,7 +35,7 @@ public class PostResponseDto {
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();
         this.comments = post.getComments() != null ? post.getComments().stream().map(CommentResponseDto::new).collect(Collectors.toList()) : new ArrayList<>();
-        this.likeCount = post.getLikes().size();
+        this.likeCount = likeCount;
     }
 
     @Builder

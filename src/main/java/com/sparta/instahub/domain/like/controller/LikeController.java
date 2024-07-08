@@ -60,15 +60,15 @@ public class LikeController {
     }
 
     // 좋아요한 게시글 모두 보기
-    @GetMapping("/posts/{postId}")
-    public ResponseEntity<Page<PostResponseDto>> getLikedPosts(@RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "5") int size,
-                                                               @AuthenticationPrincipal UserDetails userDetails) {
-        User user = userService.getUserByName(userDetails.getUsername());
-        Pageable pageable = PageRequest.of(page, size);
-        Page<PostResponseDto> likedPosts = likeService.getLikedPosts(user.getId(), pageable);
-        return ResponseEntity.ok(likedPosts);
-    }
+//    @GetMapping("/posts/{postId}")
+//    public ResponseEntity<Page<PostResponseDto>> getLikedPosts(@RequestParam(defaultValue = "0") int page,
+//                                                               @RequestParam(defaultValue = "5") int size,
+//                                                               @AuthenticationPrincipal UserDetails userDetails) {
+//        User user = userService.getUserByName(userDetails.getUsername());
+//        Pageable pageable = PageRequest.of(page, size);
+//        Page<PostResponseDto> likedPosts = likeService.getLikedPosts(user.getId(), pageable);
+//        return ResponseEntity.ok(likedPosts);
+//    }
 
     // 좋아요한 댓글 모두 보기
     @GetMapping("/comments/{commentId}")

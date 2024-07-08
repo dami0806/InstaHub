@@ -84,12 +84,12 @@ public class LikeServiceImpl implements LikeService {
         likeRepository.delete(like);
     }
 
-    @Override
-    public Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable) {
-        User user = getCurrentUser(userId);
-        Page<Post> likedPosts = likeRepository.findLikedPosts(user, pageable);
-        return likedPosts.map(PostResponseDto::new);
-    }
+//    @Override
+//    public Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable) {
+//        User user = getCurrentUser(userId);
+//        Page<Post> likedPosts = likeRepository.findLikedPosts(user, pageable);
+//        return likedPosts.map(PostResponseDto::new);
+//    }
 
     @Override
     public Page<CommentResponseDto> getLikedComments(UUID userId, Pageable pageable) {
