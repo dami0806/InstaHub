@@ -12,6 +12,7 @@ import com.sparta.instahub.domain.post.dto.PostResponseDto;
 import com.sparta.instahub.domain.post.entity.Post;
 import com.sparta.instahub.domain.post.entity.QPost;
 import com.sparta.instahub.domain.post.entity.SearchCond;
+import com.sparta.instahub.domain.post.mapper.PostMapper;
 import com.sparta.instahub.domain.post.repository.PostRepository;
 import com.sparta.instahub.domain.post.exception.InaccessiblePostException;
 import com.sparta.instahub.domain.user.dto.UserResponseDto;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -36,6 +38,7 @@ public class PostServiceImpl implements PostService {
     private final UserService userService;
     private final LikeService likeService;
     private final S3Service s3Service;
+    private final PostMapper postMapper;
 
     // 모든 게시물 조회
     @Override
@@ -47,7 +50,8 @@ public class PostServiceImpl implements PostService {
         return postsPage.stream()
                 .map(post -> {
                     long likeCount = countLikesByPostId(post.getId());
-                    return new PostResponseDto(post, likeCount);
+                    return postMapper.toPostResponseDto(post, likeCount);
+                    // return new PostResponseDto(post, likeCount);
                 })
                 .collect(Collectors.toList());
     }
@@ -58,7 +62,8 @@ public class PostServiceImpl implements PostService {
     public PostResponseDto getPostById(UUID id) {
         Post post = getPost(id);
         long likeCount = likeService.countLikesByPostId(id);
-        return new PostResponseDto(post,countLikesByPostId(id));
+        return postMapper.toPostResponseDto(post, likeCount);
+        // return new PostResponseDto(post,countLikesByPostId(id));
 
     }
 
@@ -81,8 +86,8 @@ public class PostServiceImpl implements PostService {
                     .imageUrl(imageUrl)
                     .build();
             postRepository.save(post); // Post 객체 저장
-            return new PostResponseDto(post,countLikesByPostId(post.getId()));
-
+            // return new PostResponseDto(post,countLikesByPostId(post.getId()));
+            return postMapper.toPostResponseDto(post, countLikesByPostId(post.getId()));
         } catch (InaccessiblePostException e) {
             throw new InaccessiblePostException("포스트를 생성할 수 없습니다.");
         }
@@ -107,8 +112,8 @@ public class PostServiceImpl implements PostService {
                 post.update(title, content, post.getImageUrl());
             }
             postRepository.save(post);
-            return new PostResponseDto(post,countLikesByPostId(post.getId()));
-
+           // return new PostResponseDto(post, countLikesByPostId(post.getId()));
+            return postMapper.toPostResponseDto(post, countLikesByPostId(post.getId()));
         } catch (InaccessiblePostException e) {
             throw new InaccessiblePostException("포스트를 수정할 수 없습니다.");
         }
@@ -118,14 +123,18 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<PostResponseDto> getFollowerPosts(UUID userId, SearchCond searchCond, Pageable pageable) {
         Page<Post> posts = postRepository.findAllBySearchCond(searchCond, pageable);
-        return posts.map(post -> new PostResponseDto(post, countLikesByPostId(post.getId())));
+        return posts.map(post ->
+                //new PostResponseDto(post, countLikesByPostId(post.getId())));
+                postMapper.toPostResponseDto(post, countLikesByPostId(post.getId())));
     }
 
     // 좋아요 하는 사용자 게시물 보기
     @Override
     public Page<PostResponseDto> getLikedPosts(UUID userId, Pageable pageable) {
         Page<Post> likedPosts = postRepository.findLikedPostsByUser(userId, pageable);
-        return likedPosts.map(post -> new PostResponseDto(post, countLikesByPostId(post.getId())));
+        return likedPosts.map(post ->
+                postMapper.toPostResponseDto(post, countLikesByPostId(post.getId())));
+               // new PostResponseDto(post, countLikesByPostId(post.getId())));
     }
 
 
@@ -185,6 +194,7 @@ public class PostServiceImpl implements PostService {
             throw new UnauthorizedException("해당 권한이 없는 사용자 입니다");
         }
     }
+
     @Override
     public long countLikesByPostId(UUID postId) {
         return postRepository.countLikesByPostId(postId);

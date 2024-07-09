@@ -1,30 +1,22 @@
 package com.sparta.instahub.domain.comment.dto;
 
 import com.sparta.instahub.domain.comment.entity.Comment;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CommentResponseDto {
-    final private UUID id;
-    final private String contents;
-    final private String username;
-    final private  LocalDateTime createdAt; // 생성일시
-    final private LocalDateTime updatedAt; // 수정일시
-
-    public CommentResponseDto(Comment comment) {
-        this.id = comment.getId();
-        this.contents = comment.getContents();
-        this.username = comment.getUser().getUsername();
-        this.createdAt = comment.getCreatedAt();
-        this.updatedAt = comment.getUpdatedAt();
-    }
-
-    public static CommentResponseDto commentResponseDto(Comment comment) {
-
-        return new CommentResponseDto(comment);
-    }
+    private UUID id;
+    private String contents;
+    private String username;
+    private LocalDateTime createdAt; // 생성일시
+    private LocalDateTime updatedAt; // 수정일시
 }

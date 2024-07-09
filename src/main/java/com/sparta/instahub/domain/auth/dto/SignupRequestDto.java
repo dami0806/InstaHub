@@ -13,4 +13,3 @@ public class SignupRequestDto {
     private String username;      // 이름
     private UserRole userRole;    // 사용자 역할
 }
-

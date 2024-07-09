@@ -2,15 +2,9 @@ package com.sparta.instahub.domain.like.service;
 
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.auth.service.UserService;
-import com.sparta.instahub.domain.comment.dto.CommentResponseDto;
-import com.sparta.instahub.domain.comment.entity.Comment;
-import com.sparta.instahub.domain.comment.service.CommentService;
 import com.sparta.instahub.domain.like.entity.Like;
 import com.sparta.instahub.domain.like.entity.LikeType;
 import com.sparta.instahub.domain.like.repository.LikeRepository;
-import com.sparta.instahub.domain.post.dto.PostResponseDto;
-import com.sparta.instahub.domain.post.entity.Post;
-import com.sparta.instahub.domain.post.service.PostService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -100,6 +94,4 @@ public class LikeServiceImpl implements LikeService {
     private User getCurrentUser(UUID userId) {
         return userService.getUserById(userId);
     }
-
-
 }

@@ -8,6 +8,7 @@ import com.sparta.instahub.domain.comment.dto.CommentRequestDto;
 import com.sparta.instahub.domain.comment.dto.CommentResponseDto;
 import com.sparta.instahub.domain.comment.entity.Comment;
 import com.sparta.instahub.domain.comment.exception.InaccessibleCommentException;
+import com.sparta.instahub.domain.comment.mapper.CommentMapper;
 import com.sparta.instahub.domain.comment.repository.CommentRepository;
 import com.sparta.instahub.domain.like.entity.Like;
 import com.sparta.instahub.domain.like.entity.LikeType;
@@ -30,6 +31,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final PostService postService;
     private final UserService userService;
+    private CommentMapper commentMapper;
 
     @Override
     @Transactional
@@ -43,7 +45,8 @@ public class CommentServiceImpl implements CommentService {
                 .build();
         commentRepository.save(comment);
 
-        return CommentResponseDto.commentResponseDto(comment);
+        //return CommentResponseDto.commentResponseDto(comment);
+        return commentMapper.toCommentResponseDto(comment);
     }
 
     // 댓글 수정
@@ -58,14 +61,16 @@ public class CommentServiceImpl implements CommentService {
         comment.update(requestDto.getContents());
         commentRepository.save(comment);
 
-        return CommentResponseDto.commentResponseDto(comment);
+        //return CommentResponseDto.commentResponseDto(comment);
+        return commentMapper.toCommentResponseDto(comment);
     }
 
     // 사용자 좋아요한 댓글 보기
     @Override
     public Page<CommentResponseDto> getLikedComments(UUID userId, Pageable pageable) {
         Page<Comment> likedComments = commentRepository.findLikedCommentsByUser(userId, pageable);
-        return likedComments.map(CommentResponseDto::commentResponseDto);
+       // return likedComments.map(CommentResponseDto::commentResponseDto);
+        return likedComments.map(commentMapper::toCommentResponseDto);
     }
 
     // 댓글 삭제
@@ -84,7 +89,9 @@ public class CommentServiceImpl implements CommentService {
     public Page<CommentResponseDto> getCommentsByPostId(UUID post, int page, int size, String sortBy) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortBy));
         Page<Comment> commentPage = commentRepository.findByPostId(post, pageable);
-        return commentPage.map(CommentResponseDto::commentResponseDto);
+        return commentPage.map(
+                //CommentResponseDto::commentResponseDto);
+                commentMapper::toCommentResponseDto);
     }
 
     // id로 댓글 불러오기

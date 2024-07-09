@@ -6,17 +6,14 @@ import com.sparta.instahub.domain.auth.exception.UnauthorizedException;
 import com.sparta.instahub.domain.auth.jwt.JwtUtil;
 import com.sparta.instahub.domain.auth.repository.UserRepository;
 import com.sparta.instahub.domain.auth.entity.*;
-import com.sparta.instahub.domain.profile.dto.PasswordRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,9 +22,9 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-   // private final PasswordHistoryRepository passwordHistoryRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+   // private final UserMapper userMapper;
 
     @Override
     public User update(UUID userId, String newEmail, String newUserId) {
@@ -78,12 +75,6 @@ public class UserServiceImpl implements UserService {
                 .userStatus(UserStatus.ACTIVE)
                 .userRole(userRole)
                 .build();
-
-//        Profile profile = Profile.builder()
-//                .user(user)
-//                .build();
-//
-//        user.updateProfile(profile);
 
         userRepository.save(user);
     }
@@ -247,6 +238,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username).orElseThrow(() ->
                 new UnauthorizedException("유저를 찾을수 없습니다."));
     }
+
     @Override
     public User getUserByNameActive(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
@@ -255,39 +247,6 @@ public class UserServiceImpl implements UserService {
             throw new UnauthorizedException("활성화된 사용자가 아닙니다.");
         }
         return user;
-    }
-
-
-//    @Override
-//    public User savePasswordHistory() {
-//        Authentication loginUser =  SecurityContextHolder.getContext().getAuthentication(); // 로그인 된 사용자
-//        String userName = loginUser.getName();
-//
-//        User user = userRepository.findByUsername(userName).orElseThrow(
-//                () -> new IllegalArgumentException("다시 확인해주세요")
-//        );
-//
-//        PasswordHistory passwordHistory = PasswordHistory.builder()
-//                .user(user)
-//                .password(user.getPassword())
-//                .build();
-//
-//        passwordHistoryRepository.save(passwordHistory);
-//        return user;
-//    }
-
-
-    public void updatePassword(PasswordRequestDto requestDto){
-        Authentication loginUser =  SecurityContextHolder.getContext().getAuthentication(); // 로그인 된 사용자
-        String userName = loginUser.getName();
-
-        User user = userRepository.findByUsername(userName).orElseThrow(
-                () -> new IllegalArgumentException("다시 확인해주세요")
-        );
-
-        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
-        user.updatePassword(encodedPassword);
-        userRepository.save(user);
     }
 
 
