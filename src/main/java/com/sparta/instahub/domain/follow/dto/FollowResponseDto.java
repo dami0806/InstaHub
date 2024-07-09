@@ -6,13 +6,11 @@ import lombok.*;
 import java.util.UUID;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class FollowResponseDto {
-    final private UUID id;
-    final private String username;
-    final private String email;
-    public FollowResponseDto(Follow follow) {
-        this.id = follow.getId();
-        this.username = follow.getFollowing().getUsername();
-        this.email = follow.getFollowing().getEmail();
-    }
+     private UUID id;
+     private String username;
+     private String email;
 }

@@ -3,12 +3,11 @@ package com.sparta.instahub.domain.follow.service;
 import com.sparta.instahub.domain.auth.entity.User;
 import com.sparta.instahub.domain.auth.service.UserService;
 import com.sparta.instahub.domain.follow.entity.Follow;
+import com.sparta.instahub.domain.follow.mapper.FollowMapper;
 import com.sparta.instahub.domain.follow.repository.FollowRepository;
-import com.sparta.instahub.domain.post.dto.PostResponseDto;
-import com.sparta.instahub.domain.post.entity.Post;
-import com.sparta.instahub.domain.post.entity.SearchCond;
 import com.sparta.instahub.domain.post.repository.PostRepository;
 import com.sparta.instahub.domain.user.dto.UserResponseDto;
+import com.sparta.instahub.domain.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,7 +23,8 @@ import java.util.stream.Collectors;
 public class FollowServiceImpl implements FollowService {
     private final FollowRepository followRepository;
     private final UserService userService;
-    private final PostRepository postRepository;
+    private final UserMapper userMapper;
+
 
     // 팔로우 하기
     @Override
@@ -59,7 +59,8 @@ public class FollowServiceImpl implements FollowService {
         User user = getCurrentUser(userId);
         Page<User> followings = followRepository.findFollowings(user, pageable);
         List<UserResponseDto> followingsDto = followings.stream()
-                .map(UserResponseDto::new)
+               // .map(UserResponseDto::new)
+                .map(userMapper::toUserResponseDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(followingsDto, pageable, followingsDto.size());
     }
@@ -70,8 +71,11 @@ public class FollowServiceImpl implements FollowService {
         User user = userService.getUserById(userId);
 
         Page<User> followers = followRepository.findFollowers(user, pageable);
+//        List<UserResponseDto> followersDto = followers.stream()
+//                .map(userMapper.toUserResponseDto() )
+//                .collect(Collectors.toList());
         List<UserResponseDto> followersDto = followers.stream()
-                .map(UserResponseDto::new)
+                .map(userMapper::toUserResponseDto)
                 .collect(Collectors.toList());
         return new PageImpl<>(followersDto, pageable, followersDto.size());
     }
@@ -81,7 +85,9 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public List<UserResponseDto> getTop10UserByFollowersCount() {
         List<User> top10Users = followRepository.findTop10ByFollowerCount();
-        return top10Users.stream().map(UserResponseDto::new).collect(Collectors.toList());
+        return top10Users.stream()
+                .map(userMapper::toUserResponseDto)
+                .collect(Collectors.toList());
     }
 
     // 팔로워들의 게시물 조회

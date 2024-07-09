@@ -78,10 +78,6 @@ public class User extends BaseEntity {
         this.email = email;
         this.password = password;
     }
-//    // User와 PasswordHistroy는 1대다 관계
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<PasswordHistory> passwordHistories; // 사용자가 작성한 비밀번호 목록
-
 
     // 사용자 역할 및 상태를 업데이트
     public void promoteToAdmin() {
